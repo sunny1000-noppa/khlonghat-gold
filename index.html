@@ -179,10 +179,18 @@ button,input,select{font:inherit;color:inherit}
 .slide.is-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .slides{min-height:300px}
 
-/* ---------- services ---------- */
-.services{margin-top:18px;padding:18px 20px 20px}
+/* ---------- services + facebook ---------- */
+.lower{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);gap:18px;margin-top:18px;align-items:start}
+.services{padding:18px 20px 20px}
+.fb{overflow:hidden}
+.fb-open{color:var(--gold-hi);text-decoration:none;font-size:.92rem;border:1px solid var(--rule);border-radius:999px;padding:2px 12px}
+.fb-open:hover{border-color:var(--gold)}
+.fb-frame{padding:12px 16px 14px}
+.fb-frame iframe{display:block;border:0;max-width:100%;margin:0 auto;border-radius:10px;background:#fff}
+.fb-fallback{margin:10px 0 0;color:var(--ink-mute);font-size:.82rem;text-align:center}
+.fb-fallback a{color:var(--gold-hi)}
 .services h2{margin:0 0 12px;font-family:var(--f-num);font-weight:600;font-size:1.25rem;color:var(--gold-hi)}
-.svc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.svc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .svc div{display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 12px;align-items:center;padding:12px 14px;border-radius:12px;background:rgba(0,0,0,.18);border:1px solid rgba(240,196,104,.14)}
 .svc svg{grid-row:span 2;width:40px;height:40px}
 .svc b{font-family:var(--f-num);font-weight:600;color:var(--ink);font-size:1.02rem;line-height:1.3}
@@ -235,6 +243,7 @@ footer a{color:var(--gold-hi)}
   .contact{grid-column:1/-1;justify-items:start;text-align:left;grid-auto-flow:column;justify-content:start;align-items:baseline;gap:4px 16px}
   footer{grid-template-columns:minmax(0,1fr)}
   .svc{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lower{grid-template-columns:minmax(0,1fr)}
   .slides{min-height:clamp(200px,56vw,460px)}
 }
 @media (max-width: 520px){
@@ -456,6 +465,7 @@ footer a{color:var(--gold-hi)}
     </section>
   </main>
 
+  <div class="lower">
   <section class="panel services" aria-labelledby="svcTitle">
     <h2 id="svcTitle">บริการของร้าน</h2>
     <div class="svc">
@@ -486,6 +496,17 @@ footer a{color:var(--gold-hi)}
     </div>
   </section>
 
+  <section class="panel fb" aria-labelledby="fbTitle">
+    <div class="panel-h">
+      <h2 id="fbTitle">ข่าวสารล่าสุดจากเฟซบุ๊ก</h2>
+      <a class="fb-open" id="fbOpen" href="https://www.facebook.com/profile.php?id=100063584739837" target="_blank" rel="noopener">เปิดเพจ ↗</a>
+    </div>
+    <div class="fb-frame" id="fbFrame">
+      <p class="fb-fallback">ถ้าโพสต์ไม่แสดง (เช่น เบราว์เซอร์บล็อกเนื้อหาจากเฟซบุ๊ก) <a id="fbFallback" href="https://www.facebook.com/profile.php?id=100063584739837" target="_blank" rel="noopener">กดที่นี่เพื่อดูโพสต์บนเฟซบุ๊ก</a></p>
+    </div>
+  </section>
+  </div>
+
   <footer>
     <div>
       <img class="foot-logo" src="logo-full.webp" alt="ห้างทองเยาวราชคลองหาด" width="560" height="321" loading="lazy">
@@ -493,7 +514,7 @@ footer a{color:var(--gold-hi)}
       <p id="footHours">เปิดทุกวัน 08:00–17:30 น. (หยุดทุกวันอาทิตย์)</p>
       <p>โทร <span class="num" id="footPhone">037-445001</span></p>
       <p>ไลน์ <a id="footLine" href="https://line.me/R/ti/p/@045tuugh" target="_blank" rel="noopener">@045tuugh</a></p>
-      <p>เฟซบุ๊ก <span id="footFb">ห้างทองเยาวราชคลองหาด</span></p>
+      <p>เฟซบุ๊ก <a id="footFb" href="https://www.facebook.com/profile.php?id=100063584739837" target="_blank" rel="noopener">ห้างทองเยาวราชคลองหาด</a></p>
     </div>
     <div>
       <h4>แหล่งข้อมูลราคา</h4>
@@ -522,6 +543,7 @@ const CONFIG = {
   slideSeconds: 7,
   line: '@045tuugh',
   facebook: 'ห้างทองเยาวราชคลองหาด',
+  facebookUrl: 'https://www.facebook.com/profile.php?id=100063584739837',
   // สไลด์: ใส่รูป { image: 'ชื่อไฟล์', alt: 'คำอธิบาย' } หรือข้อความ { badge, title, text, tick, art }
   slides: [
     { image: 'promo-services.jpg', alt: 'ซื้อ ขาย แลกเปลี่ยน รับออมทองไม่จำกัดระยะเวลา รับฝากทองราคาดี ดอกเบี้ยถูก มีใบรับประกันทอง' },
@@ -1085,6 +1107,27 @@ function initSlides(){
   requestAnimationFrame(frame);
 }
 
+/* ---------- facebook posts ---------- */
+let fbWidth = 0;
+function buildFb(){
+  const box = $('fbFrame');
+  const w = Math.round(Math.max(180, Math.min(500, box.clientWidth - 32)));
+  if (Math.abs(w - fbWidth) < 20) return;
+  fbWidth = w;
+  const h = window.innerWidth < 600 ? 560 : 640;
+  const src = 'https://www.facebook.com/plugins/page.php?href=' + encodeURIComponent(CONFIG.facebookUrl) +
+    `&tabs=timeline&width=${w}&height=${h}&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&locale=th_TH`;
+  let f = box.querySelector('iframe');
+  if (!f){
+    f = document.createElement('iframe');
+    f.title = 'โพสต์ล่าสุดจากเพจเฟซบุ๊กของร้าน';
+    f.loading = 'lazy';
+    f.setAttribute('allow', 'encrypted-media; picture-in-picture; web-share');
+    box.prepend(f);
+  }
+  f.width = w; f.height = h; f.src = src;
+}
+
 /* ---------- start ---------- */
 function applyConfig(){
   $('shopName').textContent = CONFIG.shopName;
@@ -1096,6 +1139,7 @@ function applyConfig(){
   $('lineText').textContent = CONFIG.line; $('lineLink').href = lineUrl;
   $('footLine').textContent = CONFIG.line; $('footLine').href = lineUrl;
   $('footFb').textContent = CONFIG.facebook;
+  ['footFb', 'fbOpen', 'fbFallback'].forEach(id => $(id).href = CONFIG.facebookUrl);
   const closed = CONFIG.closedDays.map(d => 'วัน' + TH_DAYS[d]).join(' ');
   $('hoursText').textContent = `เปิด ${CONFIG.openTime}–${CONFIG.closeTime} น.` + (closed ? ` · หยุดทุก${closed}` : '');
   $('footHours').textContent = `เปิด ${CONFIG.openTime}–${CONFIG.closeTime} น.` + (closed ? ` (หยุดทุก${closed})` : ' ทุกวัน');
@@ -1117,6 +1161,8 @@ function start(){
   every(loadIntraday, CONFIG.refreshSeconds.intraday);
   every(loadHistory, CONFIG.refreshSeconds.history);
 
+  buildFb();
+  let fbT; window.addEventListener('resize', () => { clearTimeout(fbT); fbT = setTimeout(buildFb, 500); });
   $('refreshBtn').addEventListener('click', () => { loadShop(); loadThai(); loadSpot(); });
   document.addEventListener('visibilitychange', () => { if (!document.hidden){ loadShop(); loadThai(); loadSpot(); } });
 }
