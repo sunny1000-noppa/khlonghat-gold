@@ -1,0 +1,1054 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ห้างทองเยาวราชคลองหาด</title>
+<meta name="description" content="ราคาทองคำวันนี้ อัปเดตสดตามสมาคมค้าทองคำ ห้างทองเยาวราชคลองหาด ทองแท้ มั่นใจ ราคายุติธรรม">
+<meta name="theme-color" content="#2a0709">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chonburi&family=Kanit:wght@400;500;600;700&family=Sarabun:wght@400;500;600&display=swap">
+<style>
+/* Layout: a gold-shop price board — brand header, then a two-column counter (prices | promo) above a working row (chart | calculator); stacks to one column on phones, splits again in landscape. */
+:root{
+  --bg:#2a0709;          /* lacquer red, the shop's ground */
+  --bg-deep:#1c0405;
+  --panel:#3b0b0e;
+  --panel-hi:#4e1014;
+  --rule:rgba(240,196,104,.24);
+  --gold:#f0c468;
+  --gold-hi:#ffe9ad;
+  --gold-deep:#b98328;
+  --ink:#fbf0da;
+  --ink-dim:#dcc2a0;
+  --ink-mute:#a98a72;
+  --up:#5fd393;
+  --down:#ff7a72;
+  --warn:#ffcf5c;
+  --f-display:"Chonburi","Kanit",serif;
+  --f-num:"Kanit","Sarabun",system-ui,sans-serif;
+  --f-body:"Sarabun","Kanit",system-ui,sans-serif;
+  --r:14px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{
+  background:var(--bg);
+  background-image:
+    radial-gradient(1200px 500px at 15% -10%, rgba(240,196,104,.13), transparent 60%),
+    radial-gradient(900px 600px at 110% 10%, rgba(200,40,40,.25), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(240,196,104,.025) 0 2px, transparent 2px 22px);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));padding-block:0 calc(24px + env(safe-area-inset-bottom, 0px))}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px;border-radius:6px}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+
+/* ---------- top strip ---------- */
+.strip{
+  display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:center;
+  padding-block:calc(8px + env(safe-area-inset-top, 0px)) 8px;
+  font-size:.86rem;color:var(--ink-dim);border-bottom:1px solid var(--rule);
+}
+.clock{font-variant-numeric:tabular-nums}
+.open-pill{display:inline-flex;align-items:center;gap:8px;padding:2px 12px;border-radius:999px;border:1px solid var(--rule);background:rgba(0,0,0,.2)}
+.open-pill i{width:8px;height:8px;border-radius:50%;background:var(--ink-mute);display:inline-block}
+.open-pill.is-open i{background:var(--up);box-shadow:0 0 0 3px rgba(95,211,147,.18)}
+.open-pill.is-open{color:var(--ink)}
+
+/* ---------- brand header ---------- */
+.brand{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding-block:18px}
+.seal{width:84px;height:84px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #fff3c9, var(--gold) 40%, var(--gold-deep) 100%);
+  display:grid;place-items:center;box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--gold-deep),0 8px 24px rgba(0,0,0,.45)}
+.seal svg{width:58px;height:58px}
+.brand h1{
+  margin:0;font-family:var(--f-display);font-weight:400;
+  font-size:clamp(1.5rem, 4.2vw, 3.1rem);line-height:1.25;letter-spacing:.01em;text-wrap:balance;
+  background:linear-gradient(180deg,var(--gold-hi) 10%,var(--gold) 55%,var(--gold-deep) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 0 rgba(0,0,0,.35));
+}
+.tagline{margin:4px 0 0;color:var(--ink-dim);font-size:clamp(.95rem,1.6vw,1.1rem);display:flex;align-items:center;gap:10px}
+.tagline::before,.tagline::after{content:"";height:1px;width:28px;background:linear-gradient(90deg,transparent,var(--gold))}
+.tagline::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.contact{display:grid;gap:6px;justify-items:end;text-align:right}
+.contact .phone{font-family:var(--f-num);font-size:1.45rem;font-weight:600;color:var(--gold-hi);text-decoration:none;letter-spacing:.02em}
+.contact .phone:hover{color:var(--gold)}
+.contact small{color:var(--ink-dim);font-size:.9rem}
+
+/* ---------- main grid ---------- */
+.grid{display:grid;gap:18px;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);
+  grid-template-areas:"board promo" "chart calc"}
+.board{grid-area:board}.promo{grid-area:promo}.chart{grid-area:chart}.calc{grid-area:calc}
+.panel{background:linear-gradient(180deg,var(--panel-hi),var(--panel));border:1px solid var(--rule);border-radius:var(--r);min-width:0;position:relative}
+.panel-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;padding:16px 20px 0}
+.panel-h h2{margin:0;font-family:var(--f-num);font-weight:600;font-size:1.25rem;color:var(--gold-hi)}
+
+/* ---------- price board ---------- */
+.board{padding-bottom:6px;overflow:hidden}
+.board::before{content:"";position:absolute;inset:6px;border:1px solid rgba(240,196,104,.18);border-radius:10px;pointer-events:none}
+.board-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:10px;padding:20px 22px 6px}
+.board-top h2{margin:0;font-family:var(--f-num);font-weight:700;font-size:clamp(1.6rem,3.2vw,2.3rem);line-height:1.1;
+  background:linear-gradient(180deg,var(--gold-hi),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.board-meta{margin:4px 0 0;color:var(--ink-dim);font-size:.95rem}
+.live{display:inline-flex;align-items:center;gap:8px;padding:4px 12px;border-radius:999px;font-size:.88rem;font-weight:600;
+  background:#fff;color:#a01616;white-space:nowrap}
+.live i{width:9px;height:9px;border-radius:50%;background:#e02424;animation:pulse 1.6s infinite}
+.live.is-shop{background:var(--gold);color:#3a0a0c}.live.is-shop i{background:#3a0a0c;animation:none}
+.live.is-stale{background:rgba(0,0,0,.35);color:var(--warn);border:1px solid var(--warn)}.live.is-stale i{background:var(--warn);animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(224,36,36,.6)}70%{box-shadow:0 0 0 8px rgba(224,36,36,0)}100%{box-shadow:0 0 0 0 rgba(224,36,36,0)}}
+.source-line{padding:0 22px;color:var(--ink-mute);font-size:.85rem}
+.notice{margin:10px 22px 0;padding:8px 12px;border-radius:10px;font-size:.9rem;background:rgba(255,207,92,.1);border:1px solid rgba(255,207,92,.4);color:var(--warn)}
+
+.kind{padding:14px 22px 8px;container-type:inline-size}
+.kind + .kind{border-top:1px solid var(--rule)}
+.kind-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;margin-bottom:4px}
+.kind-h h3{margin:0;font-family:var(--f-num);font-weight:600;font-size:1.15rem;color:var(--ink)}
+.kind-h h3 span{color:var(--ink-mute);font-weight:400;font-size:.9rem;margin-left:6px}
+.chg{font-family:var(--f-num);font-weight:600;font-size:.98rem;display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.chg .up{color:var(--up)}.chg .down{color:var(--down)}.chg .flat{color:var(--ink-dim)}
+.chg small{font-family:var(--f-body);font-weight:400;color:var(--ink-mute);font-size:.82rem}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cell{min-width:0}
+.cell .lbl{display:block;font-size:.95rem;color:var(--ink-dim);font-weight:500}
+.cell .lbl b{color:var(--gold);font-weight:600}
+.price{display:block;font-family:var(--f-num);font-weight:600;line-height:1.05;font-variant-numeric:tabular-nums;white-space:nowrap;
+  background:linear-gradient(180deg,#fff6d4 0%,var(--gold-hi) 30%,var(--gold) 70%,var(--gold-deep) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;transition:filter .3s}
+.kind.is-bar .price{font-size:clamp(2rem,13cqi,4.4rem)}
+.kind.is-jew .price{font-size:clamp(1.5rem,8.5cqi,2.6rem)}
+.unit{display:block;color:var(--ink-mute);font-size:.8rem;margin-top:2px}
+.flash-up{animation:flashUp 1.4s}.flash-down{animation:flashDown 1.4s}
+@keyframes flashUp{0%,40%{filter:drop-shadow(0 0 10px rgba(95,211,147,.9))}100%{filter:none}}
+@keyframes flashDown{0%,40%{filter:drop-shadow(0 0 10px rgba(255,122,114,.9))}100%{filter:none}}
+
+.world{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule);margin-top:6px}
+.world > div{padding:12px 22px;min-width:0}
+.world > div + div{border-left:1px solid var(--rule)}
+.world .lbl{font-size:.88rem;color:var(--ink-dim)}
+.world .v{font-family:var(--f-num);font-size:1.35rem;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
+.world .s{font-size:.82rem;color:var(--ink-mute)}
+.world .s .up{color:var(--up)}.world .s .down{color:var(--down)}
+
+.checked{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;padding:8px 22px 12px;color:var(--ink-mute);font-size:.8rem;border-top:1px solid var(--rule)}
+.refresh-btn{background:none;border:1px solid var(--rule);border-radius:999px;padding:1px 12px;color:var(--ink-dim);cursor:pointer;font-size:.8rem}
+.refresh-btn:hover{border-color:var(--gold);color:var(--gold-hi)}
+
+/* ---------- promo slideshow ---------- */
+.promo{overflow:hidden;display:flex;flex-direction:column;min-height:360px;
+  background:radial-gradient(500px 300px at 80% 30%, rgba(240,196,104,.18), transparent 70%),linear-gradient(160deg,#5a1216,#300809)}
+.slides{position:relative;flex:1;display:grid}
+.slide{grid-area:1/1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:12px;align-items:center;padding:26px 24px 12px;
+  opacity:0;visibility:hidden;transform:translateX(18px);transition:opacity .5s, transform .5s, visibility .5s}
+.slide.is-on{opacity:1;visibility:visible;transform:none}
+.badge{display:inline-block;padding:4px 16px;border-radius:999px;font-family:var(--f-num);font-weight:600;font-size:1rem;color:#3a0a0c;
+  background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-deep));box-shadow:0 2px 0 rgba(0,0,0,.3)}
+.slide h3{margin:14px 0 6px;font-family:var(--f-num);font-weight:700;font-size:clamp(1.35rem,2.6vw,2.05rem);line-height:1.25;color:var(--gold-hi);text-wrap:balance}
+.slide p{margin:0;color:var(--ink);font-size:1.02rem}
+.slide .tick{margin-top:14px;display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 8px;border-radius:999px;border:1px solid var(--gold);color:var(--gold-hi);font-weight:600}
+.slide .tick svg{width:22px;height:22px;flex:none}
+.art{display:grid;place-items:center;min-width:0}
+.art svg{width:100%;max-width:240px;height:auto}
+.slide-nav{display:flex;align-items:center;gap:10px;padding:8px 18px 14px}
+.slide-nav button{background:rgba(0,0,0,.25);border:1px solid var(--rule);border-radius:999px;width:36px;height:36px;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.slide-nav button:hover{border-color:var(--gold)}
+.dots{display:flex;gap:8px;flex:1;justify-content:center}
+.dots button{width:10px;height:10px;padding:0;border-radius:50%;background:rgba(255,255,255,.3);border:0}
+.dots button[aria-current="true"]{background:var(--gold);width:26px;border-radius:6px}
+.progress{height:3px;background:rgba(255,255,255,.1)}
+.progress i{display:block;height:100%;width:0;background:var(--gold)}
+
+/* ---------- chart ---------- */
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;padding:3px;border-radius:999px;background:rgba(0,0,0,.25);border:1px solid var(--rule)}
+.seg button{border:0;background:none;padding:4px 12px;border-radius:999px;cursor:pointer;color:var(--ink-dim);font-size:.9rem;font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--gold);color:#3a0a0c;font-weight:600}
+.chart-sum{display:flex;flex-wrap:wrap;gap:6px 22px;padding:12px 20px 0}
+.chart-sum div{min-width:0}
+.chart-sum .lbl{font-size:.8rem;color:var(--ink-mute);display:block}
+.chart-sum .v{font-family:var(--f-num);font-weight:600;font-size:1.1rem;font-variant-numeric:tabular-nums}
+.chart-sum .up{color:var(--up)}.chart-sum .down{color:var(--down)}
+.chart{display:flex;flex-direction:column}
+.plot{position:relative;padding:8px 12px 4px 4px;height:250px;flex:1 0 auto}
+.plot svg{display:block;width:100%;height:100%;overflow:visible;touch-action:pan-y}
+.plot .empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink-mute);font-size:.95rem;text-align:center;padding:20px}
+.tip{position:absolute;pointer-events:none;background:#170304;border:1px solid var(--gold-deep);border-radius:8px;padding:6px 10px;font-size:.85rem;white-space:nowrap;transform:translate(-50%,-115%);box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.tip b{font-family:var(--f-num);color:var(--gold-hi);font-size:1rem;display:block}
+.chart-note{padding:4px 20px 14px;color:var(--ink-mute);font-size:.8rem}
+
+/* ---------- calculator ---------- */
+.calc-body{padding:14px 20px 18px;display:grid;gap:14px}
+.field > .lbl{display:block;font-size:.88rem;color:var(--ink-dim);margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid var(--rule);background:rgba(0,0,0,.2);padding:4px 12px;border-radius:999px;cursor:pointer;font-size:.92rem;color:var(--ink)}
+.chips button[aria-pressed="true"]{border-color:var(--gold);background:rgba(240,196,104,.16);color:var(--gold-hi);font-weight:600}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row input,.row select{background:rgba(0,0,0,.3);border:1px solid var(--rule);border-radius:10px;padding:8px 12px;min-width:0}
+.row input{flex:1 1 120px;font-family:var(--f-num);font-size:1.1rem}
+.row select{flex:0 0 auto}
+.result{border-top:1px dashed var(--rule);padding-top:12px}
+.result .lbl{font-size:.9rem;color:var(--ink-dim)}
+.result .total{font-family:var(--f-num);font-weight:700;font-size:clamp(1.9rem,4vw,2.5rem);color:var(--gold-hi);line-height:1.15;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.result .break{font-size:.88rem;color:var(--ink-mute)}
+.fine{font-size:.8rem;color:var(--ink-mute);margin:0}
+
+/* ---------- footer ---------- */
+footer{margin-top:22px;padding-top:16px;border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;color:var(--ink-dim);font-size:.9rem}
+footer h4{margin:0 0 4px;font-family:var(--f-num);font-weight:600;color:var(--gold);font-size:1rem}
+footer p{margin:0}
+footer a{color:var(--gold-hi)}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px){
+  .grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"board" "calc" "chart" "promo"}
+  .brand{grid-template-columns:auto 1fr}
+  .contact{grid-column:1/-1;justify-items:start;text-align:left;grid-auto-flow:column;justify-content:start;align-items:baseline;gap:4px 16px}
+  footer{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width: 520px){
+  .seal{width:60px;height:60px}.seal svg{width:42px;height:42px}
+  .brand{gap:12px;padding-block:14px}
+  .contact{grid-auto-flow:row}
+  .board-top,.kind,.source-line,.checked{padding-left:16px;padding-right:16px}
+  .world > div{padding:10px 16px}
+  .notice{margin-inline:16px}
+  .slide{grid-template-columns:minmax(0,1fr);padding:20px 18px 6px}
+  .slide .art{order:-1}.art svg{max-width:170px}
+  .promo{min-height:0}
+  .plot{height:210px}
+  .panel-h{padding:14px 16px 0}.chart-sum{padding:10px 16px 0}.chart-note{padding:4px 16px 12px}.calc-body{padding:12px 16px 16px}
+}
+/* phones held sideways: short screen, use the width */
+@media (orientation: landscape) and (max-height: 540px){
+  .strip{padding-block:calc(4px + env(safe-area-inset-top, 0px)) 4px}
+  .brand{grid-template-columns:auto 1fr auto;padding-block:8px;gap:12px}
+  .seal{width:46px;height:46px}.seal svg{width:32px;height:32px}
+  .brand h1{font-size:1.5rem}.tagline{font-size:.88rem;margin:0}
+  .contact{grid-column:auto;justify-items:end;text-align:right;grid-auto-flow:row;gap:0}
+  .contact .phone{font-size:1.15rem}
+  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"board board" "calc chart" "promo promo";gap:14px}
+  .board-body{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+  .board-body .kind + .kind{border-top:0;border-left:1px solid var(--rule)}
+  .kind.is-bar .price{font-size:clamp(1.8rem,13cqi,3.2rem)}
+  .board-top{padding-top:14px}
+  .promo{min-height:0}
+  .slide{padding:16px 20px 6px}
+  .art svg{max-width:150px}
+  .plot{height:190px}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="strip">
+    <span class="clock" id="clock">กำลังโหลดเวลา…</span>
+    <span class="open-pill" id="openPill"><i></i><span id="openText">ตรวจสอบเวลาทำการ…</span></span>
+  </div>
+
+  <header class="brand">
+    <div class="seal" aria-hidden="true">
+      <svg viewBox="0 0 64 64">
+        <path d="M4 26c6 0 10 4 12 8h32c2-4 6-8 12-8-1 12-10 22-28 22S5 38 4 26z" fill="#7a1b12"/>
+        <ellipse cx="32" cy="30" rx="12" ry="11" fill="#7a1b12"/>
+        <ellipse cx="28" cy="25" rx="4" ry="3" fill="#ffe9ad" opacity=".35"/>
+        <path d="M14 38c5 4 11 5 18 5s13-1 18-5" fill="none" stroke="#ffe9ad" stroke-width="1.6" opacity=".45" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <h1 id="shopName">ห้างทองเยาวราชคลองหาด</h1>
+      <p class="tagline" id="tagline">ทองแท้ มั่นใจ ราคายุติธรรม</p>
+    </div>
+    <div class="contact">
+      <a class="phone" id="phoneLink" href="tel:037445001">โทร 037-445001</a>
+      <small id="hoursText">เปิด 08:00–17:30 น. · หยุดทุกวันอาทิตย์</small>
+    </div>
+  </header>
+
+  <main class="grid">
+
+    <!-- ===== price board ===== -->
+    <section class="panel board" aria-labelledby="boardTitle">
+      <div class="board-top">
+        <div>
+          <h2 id="boardTitle">ราคาทองคำวันนี้</h2>
+          <p class="board-meta" id="boardMeta">กำลังโหลดราคา…</p>
+        </div>
+        <span class="live is-stale" id="liveBadge"><i></i><span id="liveText">กำลังเชื่อมต่อ</span></span>
+      </div>
+      <div class="source-line" id="sourceLine">ราคาอ้างอิงสมาคมค้าทองคำ · ราคาซื้อขายจริงยึดตามหน้าร้าน</div>
+      <div class="notice" id="notice" hidden></div>
+
+      <div class="board-body">
+        <div class="kind is-bar">
+          <div class="kind-h">
+            <h3>ทองคำแท่ง<span>96.5%</span></h3>
+            <span class="chg" id="barChg"></span>
+          </div>
+          <div class="pair">
+            <div class="cell">
+              <span class="lbl"><b>รับซื้อ</b> (ร้านรับซื้อ)</span>
+              <span class="price" id="barBuy">–</span>
+            </div>
+            <div class="cell">
+              <span class="lbl"><b>ขายออก</b> (ร้านขาย)</span>
+              <span class="price" id="barSell">–</span>
+            </div>
+          </div>
+          <span class="unit">บาท ต่อน้ำหนัก 1 บาททองคำ (15.244 กรัม)</span>
+        </div>
+
+        <div class="kind is-jew">
+          <div class="kind-h">
+            <h3>ทองรูปพรรณ<span>96.5%</span></h3>
+          </div>
+          <div class="pair">
+            <div class="cell">
+              <span class="lbl"><b>รับซื้อ</b></span>
+              <span class="price" id="jewBuy">–</span>
+            </div>
+            <div class="cell">
+              <span class="lbl"><b>ขายออก</b></span>
+              <span class="price" id="jewSell">–</span>
+            </div>
+          </div>
+          <span class="unit">บาท ต่อน้ำหนัก 1 บาททองคำ (15.16 กรัม) · ราคาขายยังไม่รวมค่ากำเหน็จ</span>
+        </div>
+      </div>
+
+      <div class="world">
+        <div>
+          <span class="lbl">ราคาทองคำโลก</span>
+          <div class="v" id="spotVal">–</div>
+          <div class="s" id="spotSub">ดอลลาร์สหรัฐ ต่อออนซ์</div>
+        </div>
+        <div>
+          <span class="lbl">ค่าเงินบาท</span>
+          <div class="v" id="fxVal">–</div>
+          <div class="s">บาท ต่อ 1 ดอลลาร์สหรัฐ</div>
+        </div>
+      </div>
+
+      <div class="checked">
+        <span id="checkedText">ยังไม่ได้ตรวจสอบราคา</span>
+        <button class="refresh-btn" id="refreshBtn" type="button">รีเฟรชราคา</button>
+      </div>
+    </section>
+
+    <!-- ===== promo slideshow ===== -->
+    <section class="panel promo" aria-roledescription="carousel" aria-label="ข่าวสารและบริการของร้าน">
+      <div class="slides" id="slides"></div>
+      <div class="slide-nav">
+        <button type="button" id="prevSlide" aria-label="สไลด์ก่อนหน้า"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3 5 8l5 5"/></svg></button>
+        <div class="dots" id="dots" role="tablist" aria-label="เลือกสไลด์"></div>
+        <button type="button" id="pauseSlide" aria-label="หยุดเลื่อนอัตโนมัติ"><svg id="pauseIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg></button>
+        <button type="button" id="nextSlide" aria-label="สไลด์ถัดไป"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 3 5 5-5 5"/></svg></button>
+      </div>
+      <div class="progress"><i id="progressBar"></i></div>
+    </section>
+
+    <!-- ===== chart ===== -->
+    <section class="panel chart" aria-labelledby="chartTitle">
+      <div class="panel-h">
+        <h2 id="chartTitle">กราฟราคาทองคำโลก</h2>
+        <div class="seg" id="rangeSeg" role="group" aria-label="ช่วงเวลา">
+          <button type="button" data-range="1d" aria-pressed="true">24 ชม.</button>
+          <button type="button" data-range="1m" aria-pressed="false">1 เดือน</button>
+          <button type="button" data-range="6m" aria-pressed="false">6 เดือน</button>
+          <button type="button" data-range="1y" aria-pressed="false">1 ปี</button>
+          <button type="button" data-range="5y" aria-pressed="false">5 ปี</button>
+        </div>
+      </div>
+      <div class="chart-sum" id="chartSum"></div>
+      <div class="plot" id="plot">
+        <svg id="chartSvg" role="img" aria-label="กราฟราคาทองคำโลก"></svg>
+        <div class="empty" id="chartEmpty">กำลังโหลดข้อมูลกราฟ…</div>
+        <div class="tip" id="tip" hidden></div>
+      </div>
+      <div class="chart-note">หน่วย: ดอลลาร์สหรัฐ ต่อออนซ์ · ราคาทองไทยเคลื่อนไหวตามราคาทองโลกและค่าเงินบาท</div>
+    </section>
+
+    <!-- ===== calculator ===== -->
+    <section class="panel calc" aria-labelledby="calcTitle">
+      <div class="panel-h"><h2 id="calcTitle">คำนวณราคาตามน้ำหนัก</h2></div>
+      <div class="calc-body">
+        <div class="field">
+          <span class="lbl">ประเภททอง</span>
+          <div class="seg" id="typeSeg" role="group" aria-label="ประเภททอง">
+            <button type="button" data-type="bar" aria-pressed="true">ทองคำแท่ง</button>
+            <button type="button" data-type="jew" aria-pressed="false">ทองรูปพรรณ</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">ต้องการ</span>
+          <div class="seg" id="sideSeg" role="group" aria-label="ต้องการซื้อหรือขาย">
+            <button type="button" data-side="buy" aria-pressed="true">ซื้อทอง</button>
+            <button type="button" data-side="sell" aria-pressed="false">ขายทอง</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">น้ำหนัก</span>
+          <div class="chips" id="wChips">
+            <button type="button" data-w="0.125">ครึ่งสลึง</button>
+            <button type="button" data-w="0.25">1 สลึง</button>
+            <button type="button" data-w="0.5">2 สลึง</button>
+            <button type="button" data-w="1" aria-pressed="true">1 บาท</button>
+            <button type="button" data-w="2">2 บาท</button>
+            <button type="button" data-w="5">5 บาท</button>
+            <button type="button" data-w="10">10 บาท</button>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <input id="wInput" type="number" inputmode="decimal" min="0" step="any" value="1" aria-label="น้ำหนักทอง">
+            <select id="wUnit" aria-label="หน่วยน้ำหนัก">
+              <option value="baht">บาท</option>
+              <option value="salung">สลึง</option>
+              <option value="gram">กรัม</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" id="makingField" hidden>
+          <label class="lbl" for="making">ค่ากำเหน็จ (บาท) — สอบถามได้ที่ร้าน</label>
+          <div class="row"><input id="making" type="number" inputmode="decimal" min="0" step="any" placeholder="0"></div>
+        </div>
+        <div class="result" aria-live="polite">
+          <span class="lbl" id="resLbl">ราคาที่ต้องจ่ายโดยประมาณ</span>
+          <div class="total" id="resTotal">–</div>
+          <div class="break" id="resBreak"></div>
+        </div>
+        <p class="fine">ราคาประเมินเบื้องต้นจากราคาล่าสุดบนหน้านี้ ราคาซื้อขายจริงยึดตามหน้าร้าน</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <h4 id="footName">ห้างทองเยาวราชคลองหาด</h4>
+      <p id="footHours">เปิดทุกวัน 08:00–17:30 น. (หยุดทุกวันอาทิตย์)</p>
+      <p>โทร <span class="num" id="footPhone">037-445001</span></p>
+    </div>
+    <div>
+      <h4>แหล่งข้อมูลราคา</h4>
+      <p>ราคาทองไทยอ้างอิงสมาคมค้าทองคำ (ผ่านบริการ Thai Gold API) · ราคาทองคำโลก กราฟ และค่าเงินบาทจาก XAUS</p>
+    </div>
+    <div>
+      <h4>ข้อควรทราบ</h4>
+      <p>ราคาบนเว็บไซต์ใช้เพื่อประกอบการตัดสินใจ ราคาซื้อขายจริงยึดตามหน้าร้าน ณ เวลาที่ทำรายการ</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* =====================================================================
+   ตั้งค่าร้าน — แก้ไขข้อมูลร้านได้ที่นี่
+   ===================================================================== */
+const CONFIG = {
+  shopName: 'ห้างทองเยาวราชคลองหาด',
+  tagline: 'ทองแท้ มั่นใจ ราคายุติธรรม',
+  phone: '037-445001',
+  openTime: '08:00',
+  closeTime: '17:30',
+  closedDays: [0],              // 0 = อาทิตย์, 1 = จันทร์ … 6 = เสาร์
+  shopPricesUrl: 'shop-prices.json',   // ไฟล์ราคาหน้าร้าน (ใช้แทนราคาสมาคมเมื่อเปิดใช้งาน)
+  refreshSeconds: { thai: 60, spot: 30, shop: 60, intraday: 300, history: 21600 },
+  slideSeconds: 7,
+  slides: [
+    { badge: 'บริการใหม่', title: 'รับเช็คเปอร์เซ็นต์ทองคำและโลหะมีค่า',
+      text: 'รู้ผลไว แม่นยำ ไม่ทำลายเนื้อทอง', tick: 'พร้อมออกใบรับประกัน', art: 'checker' },
+    { badge: 'ห้างทองเยาวราชคลองหาด', title: 'ทองแท้ มั่นใจ ราคายุติธรรม',
+      text: 'ทองคำแท่งและทองรูปพรรณ 96.5% ราคาอ้างอิงสมาคมค้าทองคำ อัปเดตตลอดวัน', tick: '', art: 'bars' },
+    { badge: 'แวะมาที่ร้าน', title: 'เปิด 08:00–17:30 น.',
+      text: 'หยุดทุกวันอาทิตย์ สอบถามราคาและบริการได้ที่ โทร 037-445001', tick: '', art: 'store' },
+  ],
+};
+
+const API = {
+  thai: 'https://api.chnwt.dev/thai-gold-api/latest',
+  spot: 'https://xaus.com/api/v1/spot?currency=THB&compact=1',
+  intraday: 'https://xaus.com/api/v1/intraday?symbol=xau&hours=24',
+  history: 'https://xaus.com/api/v1/history',
+};
+
+/* ราคาล่าสุดที่บันทึกไว้ ใช้เฉพาะตอนที่ยังดึงราคาสดไม่ได้เลย */
+const SEED = {
+  thai: { barBuy: 65550, barSell: 65750, jewBuy: 64232.92, jewSell: 66550, date: '08/10/2569', time: '16:18', round: 16 },
+  spot: { usd: 4117, fx: 33.66 },
+};
+
+const G_BAR = 15.244, G_JEW = 15.16;
+const TH_MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const TH_DAYS = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+const TZ = 'Asia/Bangkok';
+
+const $ = id => document.getElementById(id);
+const store = {
+  get(k){ try { return JSON.parse(localStorage.getItem('khg:' + k)); } catch(e){ return null; } },
+  set(k, v){ try { localStorage.setItem('khg:' + k, JSON.stringify(v)); } catch(e){} },
+};
+const fmt = (n, d) => {
+  if (n == null || isNaN(n)) return '–';
+  const dec = d != null ? d : (Math.round(n * 100) % 100 !== 0 ? 2 : 0);
+  return n.toLocaleString('th-TH', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+};
+const toNum = s => typeof s === 'number' ? s : parseFloat(String(s).replace(/[^0-9.\-]/g, ''));
+
+/* ---------- Bangkok time helpers ---------- */
+function bkkParts(date = new Date()){
+  const p = {};
+  new Intl.DateTimeFormat('en-GB', { timeZone: TZ, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', weekday:'short', hour12:false })
+    .formatToParts(date).forEach(x => p[x.type] = x.value);
+  const wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(p.weekday);
+  return { y:+p.year, m:+p.month, d:+p.day, h:+p.hour % 24, mi:+p.minute, s:+p.second, wd };
+}
+const pad = n => String(n).padStart(2, '0');
+const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+
+function tickClock(){
+  const b = bkkParts();
+  $('clock').textContent = `วัน${TH_DAYS[b.wd]}ที่ ${b.d} ${TH_MONTHS[b.m-1]} ${b.y + 543} · ${pad(b.h)}:${pad(b.mi)}:${pad(b.s)} น.`;
+  const now = b.h * 60 + b.mi, o = toMin(CONFIG.openTime), c = toMin(CONFIG.closeTime);
+  const closedToday = CONFIG.closedDays.includes(b.wd);
+  let open = false, text;
+  const nextOpenDay = from => { for (let i = 1; i <= 7; i++){ const w = (from + i) % 7; if (!CONFIG.closedDays.includes(w)) return i === 1 ? 'พรุ่งนี้' : 'วัน' + TH_DAYS[w]; } return ''; };
+  if (closedToday) text = `วันนี้ร้านหยุด · เปิด${nextOpenDay(b.wd)} ${CONFIG.openTime} น.`;
+  else if (now < o) text = `ร้านยังไม่เปิด · เปิดวันนี้ ${CONFIG.openTime} น.`;
+  else if (now >= c) text = `ร้านปิดแล้ว · เปิด${nextOpenDay(b.wd)} ${CONFIG.openTime} น.`;
+  else { open = true; text = `ร้านเปิดอยู่ · ปิด ${CONFIG.closeTime} น.`; }
+  $('openText').textContent = text;
+  $('openPill').classList.toggle('is-open', open);
+}
+
+/* ---------- fetching ---------- */
+async function getJSON(url, ms = 12000){
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), ms);
+  try {
+    const r = await fetch(url, { signal: ctl.signal, cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+
+const state = {
+  thai: null, thaiSource: 'seed', thaiOk: null,
+  shop: null,
+  spot: null, spotOk: null, prevClose: null,
+  intraday: null, history: null,
+  range: '1d',
+  lastCheck: null,
+};
+
+function parseThai(j){
+  const r = j && j.response; if (!r || !r.price) throw new Error('bad data');
+  const t = String(r.update_time || '');
+  const tm = t.match(/(\d{1,2})[:.](\d{2})/), rd = t.match(/ครั้งที่\s*(\d+)/);
+  return {
+    barBuy: toNum(r.price.gold_bar.buy), barSell: toNum(r.price.gold_bar.sell),
+    jewBuy: toNum(r.price.gold.buy), jewSell: toNum(r.price.gold.sell),
+    date: r.update_date || '', time: tm ? `${pad(tm[1])}:${tm[2]}` : '', round: rd ? +rd[1] : null,
+  };
+}
+
+async function loadThai(){
+  try {
+    const d = parseThai(await getJSON(API.thai));
+    if (!isFinite(d.barSell)) throw new Error('bad number');
+    const before = state.thai;
+    state.thai = d; state.thaiSource = 'live'; state.thaiOk = true;
+    store.set('thai', d);
+    recordRound(d);
+    renderPrices(before);
+  } catch(e){
+    state.thaiOk = false;
+    renderPrices(state.thai);
+  }
+  stampCheck();
+}
+
+async function loadShop(){
+  if (!CONFIG.shopPricesUrl) return;
+  try {
+    const j = await getJSON(CONFIG.shopPricesUrl + (CONFIG.shopPricesUrl.includes('?') ? '&' : '?') + 't=' + Date.now());
+    const on = j['ใช้ราคาหน้าร้าน'] === true || String(j['ใช้ราคาหน้าร้าน']).toLowerCase() === 'true';
+    const v = k => { const n = toNum(j[k]); return isFinite(n) && n > 0 ? n : null; };
+    const next = on ? {
+      barBuy: v('ทองคำแท่ง_รับซื้อ'), barSell: v('ทองคำแท่ง_ขายออก'),
+      jewBuy: v('ทองรูปพรรณ_รับซื้อ'), jewSell: v('ทองรูปพรรณ_ขายออก'),
+      note: j['หมายเหตุ'] || '', updated: j['อัปเดตเมื่อ'] || '',
+    } : null;
+    const before = effective();
+    state.shop = next;
+    renderPrices(before);
+  } catch(e){ /* no shop file: use association prices */ }
+}
+
+async function loadSpot(){
+  try {
+    const j = await getJSON(API.spot);
+    const usd = toNum(j.spot_usd_oz);
+    let fx = toNum(j.fx_rate);
+    if (!(fx > 1) && j.xau && j.xau.currency === 'THB') fx = toNum(j.xau.price) / usd;
+    if (!isFinite(usd)) throw new Error('bad');
+    state.spot = { usd, fx: isFinite(fx) && fx > 1 ? fx : (state.spot && state.spot.fx), asOf: j.updated_at || j.price_as_of };
+    state.spotOk = true;
+    store.set('spot', state.spot);
+    if (state.intraday){ state.intraday.push({ t: Date.now(), v: usd }); }
+  } catch(e){ state.spotOk = false; }
+  renderSpot();
+  if (state.range === '1d') drawChart();
+  stampCheck();
+}
+
+async function loadIntraday(){
+  try {
+    const j = await getJSON(API.intraday);
+    const pts = (j.points || []).map(p => ({ t: p.t * 1000, v: +p.p })).filter(p => isFinite(p.v));
+    if (pts.length) state.intraday = pts;
+  } catch(e){}
+  if (state.range === '1d') drawChart();
+}
+
+async function loadHistory(){
+  try {
+    const j = await getJSON(API.history, 20000);
+    const pts = (j.points || []).map(p => ({ t: Date.parse(p.d + 'T12:00:00Z'), v: +p.c, d: p.d })).filter(p => isFinite(p.v) && isFinite(p.t));
+    if (pts.length){
+      state.history = pts;
+      // yesterday's close for the daily change on world gold
+      const today = new Date().toISOString().slice(0, 10);
+      const past = pts.filter(p => p.d < today);
+      state.prevClose = past.length ? past[past.length - 1].v : null;
+    }
+  } catch(e){}
+  renderSpot();
+  if (state.range !== '1d') drawChart();
+}
+
+/* ---------- rounds of the day (for the ▲▼ change) ---------- */
+function recordRound(d){
+  let log = store.get('rounds');
+  if (!log || log.date !== d.date) log = { date: d.date, rounds: [] };
+  const key = d.round != null ? 'r' + d.round : d.time;
+  if (!log.rounds.some(r => r.key === key)){
+    log.rounds.push({ key, round: d.round, time: d.time, sell: d.barSell });
+    log.rounds.sort((a, b) => (a.round || 0) - (b.round || 0));
+    store.set('rounds', log);
+  }
+}
+function barChange(d){
+  const log = store.get('rounds');
+  if (!log || !d || log.date !== d.date) return null;
+  const idx = log.rounds.findIndex(r => (d.round != null ? r.round === d.round : r.time === d.time));
+  if (idx <= 0) return null;
+  const prev = log.rounds[idx - 1], first = log.rounds[0];
+  return {
+    vsPrev: d.barSell - prev.sell, prevRound: prev.round,
+    vsFirst: first.round === 1 && idx > 1 ? d.barSell - first.sell : null,
+  };
+}
+
+/* ---------- rendering ---------- */
+function effective(){
+  const t = state.thai || SEED.thai, s = state.shop;
+  if (!s) return { ...t, shop: false };
+  return {
+    ...t, shop: true,
+    barBuy: s.barBuy ?? t.barBuy, barSell: s.barSell ?? t.barSell,
+    jewBuy: s.jewBuy ?? t.jewBuy, jewSell: s.jewSell ?? t.jewSell,
+  };
+}
+
+function setPrice(id, val, oldVal){
+  const el = $(id);
+  el.textContent = fmt(val);
+  if (oldVal != null && val != null && oldVal !== val){
+    el.classList.remove('flash-up', 'flash-down'); void el.offsetWidth;
+    el.classList.add(val > oldVal ? 'flash-up' : 'flash-down');
+  }
+}
+
+function thaiDateText(dmy){
+  const m = String(dmy).match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (!m) return dmy || '';
+  return `${+m[1]} ${TH_MONTHS[+m[2]-1]} ${m[3]}`;
+}
+
+function renderPrices(prev){
+  const e = effective();
+  const old = prev || {};
+  setPrice('barBuy', e.barBuy, old.barBuy);
+  setPrice('barSell', e.barSell, old.barSell);
+  setPrice('jewBuy', e.jewBuy, old.jewBuy);
+  setPrice('jewSell', e.jewSell, old.jewSell);
+
+  const parts = [thaiDateText(e.date)];
+  if (e.time) parts.push(`เวลา ${e.time} น.`);
+  if (e.round) parts.push(`ครั้งที่ ${e.round}`);
+  $('boardMeta').textContent = e.date ? 'ประกาศ ' + parts.join(' · ') : 'กำลังโหลดราคา…';
+
+  const badge = $('liveBadge'), lt = $('liveText');
+  badge.classList.remove('is-shop', 'is-stale');
+  if (e.shop){ badge.classList.add('is-shop'); lt.textContent = 'ราคาหน้าร้าน'; }
+  else if (state.thaiSource === 'live' && state.thaiOk !== false){ lt.textContent = 'อัปเดตสด'; }
+  else { badge.classList.add('is-stale'); lt.textContent = state.thaiOk === null ? 'กำลังเชื่อมต่อ' : 'ออฟไลน์'; }
+
+  $('sourceLine').textContent = e.shop
+    ? 'ราคาประกาศโดยร้าน' + (state.shop.updated ? ` (อัปเดต ${state.shop.updated})` : '') + ' · ราคาซื้อขายจริงยึดตามหน้าร้าน'
+    : 'ราคาอ้างอิงสมาคมค้าทองคำ · ราคาซื้อขายจริงยึดตามหน้าร้าน';
+
+  const n = $('notice');
+  if (e.shop && state.shop.note){ n.hidden = false; n.textContent = state.shop.note; }
+  else if (state.thaiOk === false && !e.shop){
+    n.hidden = false;
+    n.textContent = state.thaiSource === 'seed'
+      ? 'ยังเชื่อมต่อแหล่งราคาไม่ได้ ราคาที่แสดงเป็นราคาที่บันทึกไว้ล่าสุด กรุณาโทรสอบถามราคาปัจจุบันที่ร้าน'
+      : 'การเชื่อมต่อขัดข้องชั่วคราว ราคาที่แสดงเป็นราคาล่าสุดที่ได้รับ ระบบจะลองใหม่อัตโนมัติ';
+  } else n.hidden = true;
+
+  const c = e.shop ? null : barChange(state.thai);
+  const box = $('barChg');
+  if (!c){ box.innerHTML = ''; }
+  else {
+    const piece = (v, label) => {
+      const cls = v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
+      const arrow = v > 0 ? '▲' : v < 0 ? '▼' : '●';
+      return `<span class="${cls}">${arrow} ${fmt(Math.abs(v))}</span><small>${label}</small>`;
+    };
+    box.innerHTML = piece(c.vsPrev, 'จากครั้งก่อน') + (c.vsFirst != null ? ' ' + piece(c.vsFirst, 'ทั้งวัน') : '');
+  }
+  renderCalc();
+}
+
+function renderSpot(){
+  const s = state.spot || SEED.spot;
+  $('spotVal').textContent = '$' + fmt(s.usd, 2);
+  $('fxVal').textContent = fmt(s.fx, 2);
+  const sub = $('spotSub');
+  if (state.prevClose && state.spot){
+    const d = s.usd - state.prevClose, pct = d / state.prevClose * 100;
+    const cls = d >= 0 ? 'up' : 'down', a = d >= 0 ? '▲' : '▼';
+    sub.innerHTML = `<span class="${cls}">${a} ${fmt(Math.abs(d), 2)} (${fmt(Math.abs(pct), 2)}%)</span> จากราคาปิดวันก่อน`;
+  } else sub.textContent = 'ดอลลาร์สหรัฐ ต่อออนซ์';
+}
+
+function stampCheck(){
+  state.lastCheck = new Date();
+  const b = bkkParts(state.lastCheck);
+  const ok = state.thaiOk !== false;
+  $('checkedText').textContent = `ตรวจสอบราคาล่าสุด ${pad(b.h)}:${pad(b.mi)}:${pad(b.s)} น. · รีเฟรชอัตโนมัติทุก ${CONFIG.refreshSeconds.thai} วินาที` + (ok ? '' : ' (กำลังลองเชื่อมต่อใหม่)');
+}
+
+/* ---------- calculator ---------- */
+const calc = { type: 'bar', side: 'buy', w: 1, unit: 'baht' };
+
+function pressed(group, attr, val){
+  group.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset[attr] === String(val))));
+}
+function weightInBaht(){
+  const raw = toNum($('wInput').value);
+  if (!isFinite(raw) || raw <= 0) return null;
+  if (calc.unit === 'salung') return raw / 4;
+  if (calc.unit === 'gram') return raw / (calc.type === 'bar' ? G_BAR : G_JEW);
+  return raw;
+}
+function renderCalc(){
+  const e = effective();
+  const baht = weightInBaht();
+  const showMaking = calc.type === 'jew' && calc.side === 'buy';
+  $('makingField').hidden = !showMaking;
+  $('resLbl').textContent = calc.side === 'buy' ? 'ราคาที่ต้องจ่ายโดยประมาณ' : 'ราคาที่ร้านรับซื้อโดยประมาณ';
+  if (baht == null){ $('resTotal').textContent = '–'; $('resBreak').textContent = 'กรอกน้ำหนักทองเพื่อคำนวณ'; return; }
+  const per = calc.type === 'bar'
+    ? (calc.side === 'buy' ? e.barSell : e.barBuy)
+    : (calc.side === 'buy' ? e.jewSell : e.jewBuy);
+  const making = showMaking ? (toNum($('making').value) || 0) : 0;
+  const total = Math.round(baht * per + making);
+  const grams = baht * (calc.type === 'bar' ? G_BAR : G_JEW);
+  $('resTotal').textContent = '฿' + fmt(total, 0);
+  const salung = baht * 4;
+  const wText = Number.isInteger(baht) ? `${fmt(baht)} บาท` : Number.isInteger(salung) && salung < 4 ? `${salung} สลึง` : `${fmt(baht, 3)} บาท`;
+  $('resBreak').textContent = `${wText} (${fmt(grams, 2)} กรัม) × ${fmt(per)} บาท` + (making ? ` + ค่ากำเหน็จ ${fmt(making)} บาท` : '');
+}
+
+function initCalc(){
+  $('typeSeg').addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b) return; calc.type = b.dataset.type; pressed($('typeSeg'), 'type', calc.type); renderCalc(); });
+  $('sideSeg').addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b) return; calc.side = b.dataset.side; pressed($('sideSeg'), 'side', calc.side); renderCalc(); });
+  $('wChips').addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if (!b) return;
+    calc.unit = 'baht'; $('wUnit').value = 'baht'; $('wInput').value = b.dataset.w;
+    pressed($('wChips'), 'w', b.dataset.w); renderCalc();
+  });
+  $('wInput').addEventListener('input', () => { pressed($('wChips'), 'w', calc.unit === 'baht' ? String(toNum($('wInput').value)) : '-'); renderCalc(); });
+  $('wUnit').addEventListener('change', () => { calc.unit = $('wUnit').value; pressed($('wChips'), 'w', calc.unit === 'baht' ? String(toNum($('wInput').value)) : '-'); renderCalc(); });
+  $('making').addEventListener('input', renderCalc);
+}
+
+/* ---------- chart ---------- */
+const NS = 'http://www.w3.org/2000/svg';
+let chartPts = [];
+
+function seriesFor(range){
+  if (range === '1d'){
+    const pts = (state.intraday || []).slice();
+    return pts.sort((a, b) => a.t - b.t);
+  }
+  if (!state.history) return [];
+  const days = { '1m': 31, '6m': 183, '1y': 366, '5y': 1830 }[range];
+  const from = Date.now() - days * 864e5;
+  const pts = state.history.filter(p => p.t >= from).slice();
+  if (state.spot && pts.length) pts.push({ t: Date.now(), v: state.spot.usd, live: true });
+  return pts;
+}
+
+function fmtTick(t, range){
+  const b = bkkParts(new Date(t));
+  if (range === '1d') return `${pad(b.h)}:${pad(b.mi)}`;
+  if (range === '1m' || range === '6m') return `${b.d} ${TH_MONTHS[b.m-1]}`;
+  return `${TH_MONTHS[b.m-1]} ${String(b.y + 543).slice(2)}`;
+}
+function fmtTipDate(t, range){
+  const b = bkkParts(new Date(t));
+  const d = `${b.d} ${TH_MONTHS[b.m-1]} ${b.y + 543}`;
+  return range === '1d' ? `${d} · ${pad(b.h)}:${pad(b.mi)} น.` : d;
+}
+
+function drawChart(){
+  const svg = $('chartSvg'), empty = $('chartEmpty');
+  const pts = seriesFor(state.range);
+  chartPts = pts;
+  svg.innerHTML = '';
+  $('tip').hidden = true;
+  if (pts.length < 2){
+    empty.hidden = false;
+    empty.textContent = (state.range === '1d' ? state.intraday : state.history) === null
+      ? 'กำลังโหลดข้อมูลกราฟ…' : 'ยังไม่มีข้อมูลสำหรับช่วงเวลานี้';
+    $('chartSum').innerHTML = '';
+    return;
+  }
+  empty.hidden = true;
+  const box = svg.getBoundingClientRect();
+  const W = Math.max(280, box.width), H = Math.max(150, box.height);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const L = 54, R = 12, T = 12, B = 26;
+  const ts = pts.map(p => p.t), vs = pts.map(p => p.v);
+  const t0 = Math.min(...ts), t1 = Math.max(...ts);
+  let v0 = Math.min(...vs), v1 = Math.max(...vs);
+  const padV = (v1 - v0) * 0.12 || v1 * 0.002;
+  v0 -= padV; v1 += padV;
+  // nice ticks
+  const span = v1 - v0, raw = span / 4, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(s => s * mag).find(s => s >= raw) || raw;
+  const tickStart = Math.ceil(v0 / step) * step;
+  const x = t => L + (t - t0) / (t1 - t0 || 1) * (W - L - R);
+  const y = v => T + (1 - (v - v0) / (v1 - v0)) * (H - T - B);
+  const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
+
+  const defs = el('defs', {});
+  const grad = el('linearGradient', { id: 'gfill', x1: 0, y1: 0, x2: 0, y2: 1 });
+  grad.append(el('stop', { offset: '0%', 'stop-color': '#f0c468', 'stop-opacity': .38 }), el('stop', { offset: '100%', 'stop-color': '#f0c468', 'stop-opacity': 0 }));
+  defs.append(grad); svg.append(defs);
+
+  for (let v = tickStart; v <= v1; v += step){
+    svg.append(el('line', { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: 'rgba(240,196,104,.13)', 'stroke-width': 1 }));
+    const tx = el('text', { x: L - 8, y: y(v) + 4, 'text-anchor': 'end', fill: '#a98a72', 'font-size': 11, 'font-family': 'Kanit, sans-serif' });
+    tx.textContent = fmt(v, step < 1 ? 2 : 0); svg.append(tx);
+  }
+  const nx = W < 420 ? 3 : 5;
+  for (let i = 0; i < nx; i++){
+    const t = t0 + (t1 - t0) * (i / (nx - 1));
+    const tx = el('text', { x: x(t), y: H - 6, 'text-anchor': i === 0 ? 'start' : i === nx - 1 ? 'end' : 'middle', fill: '#a98a72', 'font-size': 11, 'font-family': 'Sarabun, sans-serif' });
+    tx.textContent = fmtTick(t, state.range); svg.append(tx);
+  }
+  const line = pts.map((p, i) => `${i ? 'L' : 'M'}${x(p.t).toFixed(1)},${y(p.v).toFixed(1)}`).join('');
+  svg.append(el('path', { d: `${line}L${x(t1)},${H - B}L${x(t0)},${H - B}Z`, fill: 'url(#gfill)' }));
+  svg.append(el('path', { d: line, fill: 'none', stroke: '#f0c468', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+  const last = pts[pts.length - 1];
+  svg.append(el('circle', { cx: x(last.t), cy: y(last.v), r: 5, fill: '#ffe9ad', stroke: '#2a0709', 'stroke-width': 2 }));
+  const cross = el('line', { x1: 0, x2: 0, y1: T, y2: H - B, stroke: 'rgba(255,233,173,.5)', 'stroke-dasharray': '3 3', visibility: 'hidden' });
+  const dot = el('circle', { r: 5, fill: '#ffe9ad', stroke: '#2a0709', 'stroke-width': 2, visibility: 'hidden' });
+  svg.append(cross, dot);
+
+  const hit = el('rect', { x: L, y: 0, width: W - L - R, height: H, fill: 'transparent' });
+  svg.append(hit);
+  const tip = $('tip'), plot = $('plot');
+  const move = ev => {
+    const r = svg.getBoundingClientRect();
+    const px = (ev.clientX - r.left) * (W / r.width);
+    const tt = t0 + (px - L) / (W - L - R) * (t1 - t0);
+    let best = pts[0];
+    for (const p of pts) if (Math.abs(p.t - tt) < Math.abs(best.t - tt)) best = p;
+    const cx = x(best.t), cy = y(best.v);
+    cross.setAttribute('x1', cx); cross.setAttribute('x2', cx); cross.setAttribute('visibility', 'visible');
+    dot.setAttribute('cx', cx); dot.setAttribute('cy', cy); dot.setAttribute('visibility', 'visible');
+    tip.hidden = false;
+    tip.innerHTML = `<b>$${fmt(best.v, 2)}</b>${best.live ? 'ราคาล่าสุด' : fmtTipDate(best.t, state.range)}`;
+    const pr = plot.getBoundingClientRect();
+    let left = r.left - pr.left + cx * (r.width / W);
+    left = Math.min(Math.max(left, 70), pr.width - 70);
+    tip.style.left = left + 'px';
+    tip.style.top = (r.top - pr.top + cy * (r.height / H)) + 'px';
+  };
+  const leave = () => { tip.hidden = true; cross.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); };
+  hit.addEventListener('pointermove', move);
+  hit.addEventListener('pointerdown', move);
+  hit.addEventListener('pointerleave', leave);
+
+  const first = pts[0].v, d = last.v - first, pct = d / first * 100;
+  const cls = d >= 0 ? 'up' : 'down', a = d >= 0 ? '▲' : '▼';
+  const label = { '1d': 'ใน 24 ชม.', '1m': 'ใน 1 เดือน', '6m': 'ใน 6 เดือน', '1y': 'ใน 1 ปี', '5y': 'ใน 5 ปี' }[state.range];
+  $('chartSum').innerHTML =
+    `<div><span class="lbl">ล่าสุด</span><span class="v">$${fmt(last.v, 2)}</span></div>` +
+    `<div><span class="lbl">เปลี่ยนแปลง${label}</span><span class="v ${cls}">${a} ${fmt(Math.abs(d), 2)} (${fmt(Math.abs(pct), 2)}%)</span></div>` +
+    `<div><span class="lbl">สูงสุด</span><span class="v">$${fmt(Math.max(...vs), 2)}</span></div>` +
+    `<div><span class="lbl">ต่ำสุด</span><span class="v">$${fmt(Math.min(...vs), 2)}</span></div>`;
+  $('chartSvg').setAttribute('aria-label', `กราฟราคาทองคำโลก${label} ล่าสุด ${fmt(last.v, 2)} ดอลลาร์ต่อออนซ์`);
+}
+
+function initChart(){
+  $('rangeSeg').addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if (!b) return;
+    state.range = b.dataset.range; pressed($('rangeSeg'), 'range', state.range);
+    drawChart();
+  });
+  let raf;
+  new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(drawChart); }).observe($('plot'));
+}
+
+/* ---------- slideshow ---------- */
+const ART = {
+  checker: `<svg viewBox="0 0 220 200" aria-hidden="true">
+    <ellipse cx="110" cy="186" rx="96" ry="10" fill="#000" opacity=".3"/>
+    <rect x="34" y="40" width="152" height="140" rx="14" fill="#f4efe6"/>
+    <rect x="34" y="40" width="152" height="34" rx="14" fill="#e6dfd2"/>
+    <rect x="70" y="28" width="80" height="12" rx="6" fill="#2b2222"/>
+    <rect x="76" y="104" width="68" height="10" rx="5" fill="#7cc8ff"/>
+    <rect x="76" y="104" width="68" height="10" rx="5" fill="#bfe6ff" opacity=".7"/>
+    <circle cx="110" cy="138" r="6" fill="#d33"/>
+    <rect x="-6" y="150" width="60" height="30" rx="4" fill="url(#gb1)"/>
+    <defs><linearGradient id="gb1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9ad"/><stop offset=".55" stop-color="#f0c468"/><stop offset="1" stop-color="#b98328"/></linearGradient></defs>
+  </svg>`,
+  bars: `<svg viewBox="0 0 220 200" aria-hidden="true">
+    <defs><linearGradient id="gb2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c9"/><stop offset=".5" stop-color="#f0c468"/><stop offset="1" stop-color="#a8741f"/></linearGradient></defs>
+    <ellipse cx="110" cy="182" rx="100" ry="10" fill="#000" opacity=".3"/>
+    <g stroke="#8a5c16" stroke-width="1.5">
+      <path d="M20 176 L36 140 H104 L120 176 Z" fill="url(#gb2)"/>
+      <path d="M100 176 L116 140 H184 L200 176 Z" fill="url(#gb2)"/>
+      <path d="M60 140 L76 104 H144 L160 140 Z" fill="url(#gb2)"/>
+      <path d="M80 104 L94 74 H126 L140 104 Z" fill="url(#gb2)"/>
+    </g>
+    <text x="110" y="128" text-anchor="middle" font-family="Kanit,sans-serif" font-weight="600" font-size="14" fill="#7a4d10">96.5%</text>
+    <g fill="#ffe9ad"><circle cx="40" cy="70" r="3"/><circle cx="182" cy="54" r="2.5"/><circle cx="168" cy="96" r="2"/></g>
+  </svg>`,
+  store: `<svg viewBox="0 0 220 200" aria-hidden="true">
+    <defs><linearGradient id="gb3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9ad"/><stop offset="1" stop-color="#b98328"/></linearGradient></defs>
+    <ellipse cx="110" cy="186" rx="96" ry="9" fill="#000" opacity=".3"/>
+    <rect x="30" y="70" width="160" height="110" rx="6" fill="#4e1014" stroke="url(#gb3)" stroke-width="3"/>
+    <path d="M22 72 L40 40 H180 L198 72 Z" fill="url(#gb3)"/>
+    <rect x="48" y="96" width="56" height="84" rx="4" fill="#2a0709" stroke="#f0c468"/>
+    <rect x="118" y="96" width="54" height="44" rx="4" fill="#2a0709" stroke="#f0c468"/>
+    <circle cx="96" cy="140" r="3" fill="#f0c468"/>
+    <circle cx="160" cy="40" r="16" fill="#c0262a" stroke="#f0c468" stroke-width="2"/>
+    <rect x="152" y="56" width="16" height="10" rx="2" fill="#c0262a"/>
+  </svg>`,
+};
+
+function initSlides(){
+  const wrap = $('slides'), dots = $('dots');
+  const tickIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#f0c468"/><path d="m7 12.5 3.2 3.2L17 9" fill="none" stroke="#3a0a0c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  CONFIG.slides.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'slide'; d.setAttribute('role', 'group'); d.setAttribute('aria-roledescription', 'สไลด์');
+    d.setAttribute('aria-label', `${i + 1} จาก ${CONFIG.slides.length}`);
+    d.innerHTML = `<div><span class="badge"></span><h3></h3><p></p>${s.tick ? `<span class="tick">${tickIcon}<span></span></span>` : ''}</div><div class="art">${ART[s.art] || ART.bars}</div>`;
+    d.querySelector('.badge').textContent = s.badge;
+    d.querySelector('h3').textContent = s.title;
+    d.querySelector('p').textContent = s.text;
+    if (s.tick) d.querySelector('.tick span').textContent = s.tick;
+    wrap.append(d);
+    const b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('aria-label', `ไปที่สไลด์ ${i + 1}`);
+    b.addEventListener('click', () => go(i, true));
+    dots.append(b);
+  });
+  const slides = [...wrap.children], dotEls = [...dots.children];
+  let cur = 0, paused = false, startedAt = performance.now(), elapsed = 0;
+  const dur = CONFIG.slideSeconds * 1000;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function go(i, user){
+    cur = (i + slides.length) % slides.length;
+    slides.forEach((s, k) => { s.classList.toggle('is-on', k === cur); s.setAttribute('aria-hidden', String(k !== cur)); });
+    dotEls.forEach((d, k) => d.setAttribute('aria-current', String(k === cur)));
+    startedAt = performance.now(); elapsed = 0;
+  }
+  function frame(now){
+    if (!paused){
+      elapsed = now - startedAt;
+      if (elapsed >= dur) go(cur + 1);
+      $('progressBar').style.width = Math.min(100, elapsed / dur * 100) + '%';
+    }
+    requestAnimationFrame(frame);
+  }
+  const setPaused = p => {
+    paused = p;
+    if (!p) startedAt = performance.now() - elapsed;
+    $('pauseSlide').setAttribute('aria-label', p ? 'เล่นสไลด์อัตโนมัติ' : 'หยุดเลื่อนอัตโนมัติ');
+    $('pauseIcon').innerHTML = p ? '<path d="M3 1.5v11l9-5.5z"/>' : '<rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/>';
+  };
+  $('prevSlide').addEventListener('click', () => go(cur - 1, true));
+  $('nextSlide').addEventListener('click', () => go(cur + 1, true));
+  $('pauseSlide').addEventListener('click', () => setPaused(!paused));
+  let sx = null;
+  wrap.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+  wrap.addEventListener('touchend', e => { if (sx == null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1), true); sx = null; });
+  go(0);
+  if (reduce) setPaused(true);
+  requestAnimationFrame(frame);
+}
+
+/* ---------- start ---------- */
+function applyConfig(){
+  $('shopName').textContent = CONFIG.shopName;
+  $('footName').textContent = CONFIG.shopName;
+  $('tagline').textContent = CONFIG.tagline;
+  $('phoneLink').textContent = 'โทร ' + CONFIG.phone;
+  $('phoneLink').href = 'tel:' + CONFIG.phone.replace(/[^0-9+]/g, '');
+  $('footPhone').textContent = CONFIG.phone;
+  const closed = CONFIG.closedDays.map(d => 'วัน' + TH_DAYS[d]).join(' ');
+  $('hoursText').textContent = `เปิด ${CONFIG.openTime}–${CONFIG.closeTime} น.` + (closed ? ` · หยุดทุก${closed}` : '');
+  $('footHours').textContent = `เปิด ${CONFIG.openTime}–${CONFIG.closeTime} น.` + (closed ? ` (หยุดทุก${closed})` : ' ทุกวัน');
+}
+
+function start(){
+  applyConfig();
+  tickClock(); setInterval(tickClock, 1000);
+  const cachedThai = store.get('thai'), cachedSpot = store.get('spot');
+  if (cachedThai){ state.thai = cachedThai; state.thaiSource = 'cache'; }
+  if (cachedSpot){ state.spot = cachedSpot; }
+  initCalc(); initChart(); initSlides();
+  renderPrices(null); renderSpot();
+
+  const every = (fn, s) => { fn(); return setInterval(fn, s * 1000); };
+  every(loadShop, CONFIG.refreshSeconds.shop);
+  every(loadThai, CONFIG.refreshSeconds.thai);
+  every(loadSpot, CONFIG.refreshSeconds.spot);
+  every(loadIntraday, CONFIG.refreshSeconds.intraday);
+  every(loadHistory, CONFIG.refreshSeconds.history);
+
+  $('refreshBtn').addEventListener('click', () => { loadShop(); loadThai(); loadSpot(); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden){ loadShop(); loadThai(); loadSpot(); } });
+}
+start();
+</script>
+</body>
+</html>
