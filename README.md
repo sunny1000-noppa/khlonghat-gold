@@ -8,6 +8,8 @@ A single-page Thai website that shows live gold prices for the shop. It works on
 |---|---|
 | `index.html` | The whole website (design, prices, chart, calculator, slideshow) |
 | `shop-prices.json` | The shop's own prices, used only when you switch them on |
+| `logo-lions.webp`, `logo-full.webp`, `favicon.png` | Shop logo for the header, footer and browser tab icon |
+| `promo-services.jpg`, `promo-buy-old-gold.jpg` | Slideshow pictures. To add or swap one, upload the image and list its file name in `slides` inside `CONFIG` |
 | `README.md` | This guide |
 
 ## Where the prices come from

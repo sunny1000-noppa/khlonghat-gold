@@ -6,6 +6,11 @@
 <title>ห้างทองเยาวราชคลองหาด</title>
 <meta name="description" content="ราคาทองคำวันนี้ อัปเดตสดตามสมาคมค้าทองคำ ห้างทองเยาวราชคลองหาด ทองแท้ มั่นใจ ราคายุติธรรม">
 <meta name="theme-color" content="#2a0709">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:title" content="ห้างทองเยาวราชคลองหาด · ราคาทองคำวันนี้">
+<meta property="og:description" content="ราคาทองคำวันนี้ อัปเดตสดตามสมาคมค้าทองคำ ซื้อ ขาย แลกเปลี่ยน รับซื้อทองเก่า รับออมทอง">
+<meta property="og:image" content="promo-services.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chonburi&family=Kanit:wght@400;500;600;700&family=Sarabun:wght@400;500;600&display=swap">
@@ -67,10 +72,7 @@ button,input,select{font:inherit;color:inherit}
 
 /* ---------- brand header ---------- */
 .brand{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding-block:18px}
-.seal{width:84px;height:84px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%, #fff3c9, var(--gold) 40%, var(--gold-deep) 100%);
-  display:grid;place-items:center;box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--gold-deep),0 8px 24px rgba(0,0,0,.45)}
-.seal svg{width:58px;height:58px}
+.mark{width:clamp(130px,15vw,200px);height:auto;display:block;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
 .brand h1{
   margin:0;font-family:var(--f-display);font-weight:400;
   font-size:clamp(1.5rem, 4.2vw, 3.1rem);line-height:1.25;letter-spacing:.01em;text-wrap:balance;
@@ -84,6 +86,9 @@ button,input,select{font:inherit;color:inherit}
 .contact{display:grid;gap:6px;justify-items:end;text-align:right}
 .contact .phone{font-family:var(--f-num);font-size:1.45rem;font-weight:600;color:var(--gold-hi);text-decoration:none;letter-spacing:.02em}
 .contact .phone:hover{color:var(--gold)}
+.line-link{display:inline-flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;font-family:var(--f-num);font-weight:500}
+.line-link:hover{color:var(--gold-hi)}
+.line-ico{display:inline-grid;place-items:center;padding:1px 7px;border-radius:6px;background:#06c755;color:#fff;font:700 .68rem/1.5 system-ui,sans-serif;letter-spacing:.02em}
 .contact small{color:var(--ink-dim);font-size:.9rem}
 
 /* ---------- main grid ---------- */
@@ -167,6 +172,22 @@ button,input,select{font:inherit;color:inherit}
 .dots button[aria-current="true"]{background:var(--gold);width:26px;border-radius:6px}
 .progress{height:3px;background:rgba(255,255,255,.1)}
 .progress i{display:block;height:100%;width:0;background:var(--gold)}
+.slide{position:relative;overflow:hidden}
+.slide.is-img{padding:0;display:block;min-height:100%}
+.slide.is-img .blur{position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(20px) brightness(.5) saturate(1.2)}
+.slide.is-img a{position:absolute;inset:0;display:block}
+.slide.is-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.slides{min-height:300px}
+
+/* ---------- services ---------- */
+.services{margin-top:18px;padding:18px 20px 20px}
+.services h2{margin:0 0 12px;font-family:var(--f-num);font-weight:600;font-size:1.25rem;color:var(--gold-hi)}
+.svc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.svc div{display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 12px;align-items:center;padding:12px 14px;border-radius:12px;background:rgba(0,0,0,.18);border:1px solid rgba(240,196,104,.14)}
+.svc svg{grid-row:span 2;width:40px;height:40px}
+.svc b{font-family:var(--f-num);font-weight:600;color:var(--ink);font-size:1.02rem;line-height:1.3}
+.svc span{color:var(--ink-dim);font-size:.88rem;line-height:1.35}
+.foot-logo{width:min(220px,70%);height:auto;display:block;margin-bottom:8px}
 
 /* ---------- chart ---------- */
 .seg{display:inline-flex;flex-wrap:wrap;gap:4px;padding:3px;border-radius:999px;background:rgba(0,0,0,.25);border:1px solid var(--rule)}
@@ -213,9 +234,14 @@ footer a{color:var(--gold-hi)}
   .brand{grid-template-columns:auto 1fr}
   .contact{grid-column:1/-1;justify-items:start;text-align:left;grid-auto-flow:column;justify-content:start;align-items:baseline;gap:4px 16px}
   footer{grid-template-columns:minmax(0,1fr)}
+  .svc{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .slides{min-height:clamp(200px,56vw,460px)}
 }
 @media (max-width: 520px){
-  .seal{width:60px;height:60px}.seal svg{width:42px;height:42px}
+  .mark{width:78px}
+  .brand h1{font-size:1.32rem}
+  .tagline{font-size:.88rem}
+  .tagline::before,.tagline::after{display:none}
   .brand{gap:12px;padding-block:14px}
   .contact{grid-auto-flow:row}
   .board-top,.kind,.source-line,.checked{padding-left:16px;padding-right:16px}
@@ -225,13 +251,15 @@ footer a{color:var(--gold-hi)}
   .slide .art{order:-1}.art svg{max-width:170px}
   .promo{min-height:0}
   .plot{height:210px}
+  .svc{grid-template-columns:minmax(0,1fr)}
+  .services{padding:16px}
   .panel-h{padding:14px 16px 0}.chart-sum{padding:10px 16px 0}.chart-note{padding:4px 16px 12px}.calc-body{padding:12px 16px 16px}
 }
 /* phones held sideways: short screen, use the width */
 @media (orientation: landscape) and (max-height: 540px){
   .strip{padding-block:calc(4px + env(safe-area-inset-top, 0px)) 4px}
   .brand{grid-template-columns:auto 1fr auto;padding-block:8px;gap:12px}
-  .seal{width:46px;height:46px}.seal svg{width:32px;height:32px}
+  .mark{width:96px}
   .brand h1{font-size:1.5rem}.tagline{font-size:.88rem;margin:0}
   .contact{grid-column:auto;justify-items:end;text-align:right;grid-auto-flow:row;gap:0}
   .contact .phone{font-size:1.15rem}
@@ -244,6 +272,8 @@ footer a{color:var(--gold-hi)}
   .slide{padding:16px 20px 6px}
   .art svg{max-width:150px}
   .plot{height:190px}
+  .slides{min-height:min(52vw,420px)}
+  .svc{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -259,20 +289,14 @@ footer a{color:var(--gold-hi)}
   </div>
 
   <header class="brand">
-    <div class="seal" aria-hidden="true">
-      <svg viewBox="0 0 64 64">
-        <path d="M4 26c6 0 10 4 12 8h32c2-4 6-8 12-8-1 12-10 22-28 22S5 38 4 26z" fill="#7a1b12"/>
-        <ellipse cx="32" cy="30" rx="12" ry="11" fill="#7a1b12"/>
-        <ellipse cx="28" cy="25" rx="4" ry="3" fill="#ffe9ad" opacity=".35"/>
-        <path d="M14 38c5 4 11 5 18 5s13-1 18-5" fill="none" stroke="#ffe9ad" stroke-width="1.6" opacity=".45" stroke-linecap="round"/>
-      </svg>
-    </div>
+    <img class="mark" src="logo-lions.webp" alt="" width="640" height="257">
     <div>
       <h1 id="shopName">ห้างทองเยาวราชคลองหาด</h1>
       <p class="tagline" id="tagline">ทองแท้ มั่นใจ ราคายุติธรรม</p>
     </div>
     <div class="contact">
       <a class="phone" id="phoneLink" href="tel:037445001">โทร 037-445001</a>
+      <a class="line-link" id="lineLink" href="https://line.me/R/ti/p/@045tuugh" target="_blank" rel="noopener"><span class="line-ico" aria-hidden="true">LINE</span><span id="lineText">@045tuugh</span></a>
       <small id="hoursText">เปิด 08:00–17:30 น. · หยุดทุกวันอาทิตย์</small>
     </div>
   </header>
@@ -432,11 +456,44 @@ footer a{color:var(--gold-hi)}
     </section>
   </main>
 
+  <section class="panel services" aria-labelledby="svcTitle">
+    <h2 id="svcTitle">บริการของร้าน</h2>
+    <div class="svc">
+      <div>
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#f0c468"/><path d="M11 16h15l-3-3M29 24H14l3 3" fill="none" stroke="#3a0a0c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <b>ซื้อ ขาย แลกเปลี่ยน</b><span>ทองคำแท่งและทองรูปพรรณ 96.5%</span>
+      </div>
+      <div>
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#f0c468"/><path d="M10 25l4-9h12l4 9z" fill="#3a0a0c"/><path d="M15 16l2-4h6l2 4" fill="none" stroke="#3a0a0c" stroke-width="2"/></svg>
+        <b>รับซื้อทองเก่า ราคาสูง</b><span>ประเมินตรง โปร่งใส ให้ราคาดี</span>
+      </div>
+      <div>
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#f0c468"/><rect x="11" y="16" width="18" height="13" rx="3" fill="#3a0a0c"/><rect x="16" y="13" width="8" height="3" rx="1.5" fill="#3a0a0c"/><circle cx="20" cy="22.5" r="2.6" fill="#f0c468"/></svg>
+        <b>รับออมทอง</b><span>ไม่จำกัดระยะเวลา</span>
+      </div>
+      <div>
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#f0c468"/><rect x="12" y="18" width="16" height="11" rx="2" fill="#3a0a0c"/><path d="M15 18v-3a5 5 0 0 1 10 0v3" fill="none" stroke="#3a0a0c" stroke-width="2.4"/></svg>
+        <b>รับฝากทอง ราคาดี</b><span>ดอกเบี้ยถูก</span>
+      </div>
+      <div>
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#f0c468"/><circle cx="18" cy="18" r="6" fill="none" stroke="#3a0a0c" stroke-width="2.4"/><path d="M22.5 22.5l6 6" stroke="#3a0a0c" stroke-width="2.6" stroke-linecap="round"/></svg>
+        <b>เช็คเปอร์เซ็นต์ทองคำ</b><span>และโลหะมีค่า รู้ผลไว ไม่ทำลายเนื้อทอง</span>
+      </div>
+      <div>
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#f0c468"/><path d="M13 20.5l4.5 4.5L27 15.5" fill="none" stroke="#3a0a0c" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <b>มีใบรับประกันทอง</b><span>ทองแท้ มั่นใจได้ทุกชิ้น</span>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div>
-      <h4 id="footName">ห้างทองเยาวราชคลองหาด</h4>
+      <img class="foot-logo" src="logo-full.webp" alt="ห้างทองเยาวราชคลองหาด" width="560" height="321" loading="lazy">
+      <h4 id="footName">ติดต่อร้าน</h4>
       <p id="footHours">เปิดทุกวัน 08:00–17:30 น. (หยุดทุกวันอาทิตย์)</p>
       <p>โทร <span class="num" id="footPhone">037-445001</span></p>
+      <p>ไลน์ <a id="footLine" href="https://line.me/R/ti/p/@045tuugh" target="_blank" rel="noopener">@045tuugh</a></p>
+      <p>เฟซบุ๊ก <span id="footFb">ห้างทองเยาวราชคลองหาด</span></p>
     </div>
     <div>
       <h4>แหล่งข้อมูลราคา</h4>
@@ -463,13 +520,14 @@ const CONFIG = {
   shopPricesUrl: 'shop-prices.json',   // ไฟล์ราคาหน้าร้าน (ใช้แทนราคาสมาคมเมื่อเปิดใช้งาน)
   refreshSeconds: { thai: 60, spot: 30, shop: 60, intraday: 300, history: 21600 },
   slideSeconds: 7,
+  line: '@045tuugh',
+  facebook: 'ห้างทองเยาวราชคลองหาด',
+  // สไลด์: ใส่รูป { image: 'ชื่อไฟล์', alt: 'คำอธิบาย' } หรือข้อความ { badge, title, text, tick, art }
   slides: [
+    { image: 'promo-services.jpg', alt: 'ซื้อ ขาย แลกเปลี่ยน รับออมทองไม่จำกัดระยะเวลา รับฝากทองราคาดี ดอกเบี้ยถูก มีใบรับประกันทอง' },
+    { image: 'promo-buy-old-gold.jpg', alt: 'รับซื้อทองเก่า ราคาสูง ประเมินตรง โปร่งใส ให้ราคาดี' },
     { badge: 'บริการใหม่', title: 'รับเช็คเปอร์เซ็นต์ทองคำและโลหะมีค่า',
       text: 'รู้ผลไว แม่นยำ ไม่ทำลายเนื้อทอง', tick: 'พร้อมออกใบรับประกัน', art: 'checker' },
-    { badge: 'ห้างทองเยาวราชคลองหาด', title: 'ทองแท้ มั่นใจ ราคายุติธรรม',
-      text: 'ทองคำแท่งและทองรูปพรรณ 96.5% ราคาอ้างอิงสมาคมค้าทองคำ อัปเดตตลอดวัน', tick: '', art: 'bars' },
-    { badge: 'แวะมาที่ร้าน', title: 'เปิด 08:00–17:30 น.',
-      text: 'หยุดทุกวันอาทิตย์ สอบถามราคาและบริการได้ที่ โทร 037-445001', tick: '', art: 'store' },
   ],
 };
 
@@ -970,11 +1028,22 @@ function initSlides(){
     const d = document.createElement('div');
     d.className = 'slide'; d.setAttribute('role', 'group'); d.setAttribute('aria-roledescription', 'สไลด์');
     d.setAttribute('aria-label', `${i + 1} จาก ${CONFIG.slides.length}`);
-    d.innerHTML = `<div><span class="badge"></span><h3></h3><p></p>${s.tick ? `<span class="tick">${tickIcon}<span></span></span>` : ''}</div><div class="art">${ART[s.art] || ART.bars}</div>`;
-    d.querySelector('.badge').textContent = s.badge;
-    d.querySelector('h3').textContent = s.title;
-    d.querySelector('p').textContent = s.text;
-    if (s.tick) d.querySelector('.tick span').textContent = s.tick;
+    if (s.image){
+      d.classList.add('is-img');
+      const blur = document.createElement('div'); blur.className = 'blur';
+      blur.style.backgroundImage = `url("${s.image}")`;
+      const a = document.createElement('a'); a.href = s.image; a.target = '_blank'; a.rel = 'noopener';
+      a.setAttribute('aria-label', 'ดูรูปขนาดเต็ม');
+      const img = document.createElement('img'); img.src = s.image; img.alt = s.alt || ''; img.decoding = 'async';
+      if (i > 0) img.loading = 'lazy';
+      a.append(img); d.append(blur, a);
+    } else {
+      d.innerHTML = `<div><span class="badge"></span><h3></h3><p></p>${s.tick ? `<span class="tick">${tickIcon}<span></span></span>` : ''}</div><div class="art">${ART[s.art] || ART.bars}</div>`;
+      d.querySelector('.badge').textContent = s.badge;
+      d.querySelector('h3').textContent = s.title;
+      d.querySelector('p').textContent = s.text;
+      if (s.tick) d.querySelector('.tick span').textContent = s.tick;
+    }
     wrap.append(d);
     const b = document.createElement('button');
     b.type = 'button'; b.setAttribute('aria-label', `ไปที่สไลด์ ${i + 1}`);
@@ -1019,11 +1088,14 @@ function initSlides(){
 /* ---------- start ---------- */
 function applyConfig(){
   $('shopName').textContent = CONFIG.shopName;
-  $('footName').textContent = CONFIG.shopName;
   $('tagline').textContent = CONFIG.tagline;
   $('phoneLink').textContent = 'โทร ' + CONFIG.phone;
   $('phoneLink').href = 'tel:' + CONFIG.phone.replace(/[^0-9+]/g, '');
   $('footPhone').textContent = CONFIG.phone;
+  const lineUrl = 'https://line.me/R/ti/p/' + encodeURIComponent(CONFIG.line);
+  $('lineText').textContent = CONFIG.line; $('lineLink').href = lineUrl;
+  $('footLine').textContent = CONFIG.line; $('footLine').href = lineUrl;
+  $('footFb').textContent = CONFIG.facebook;
   const closed = CONFIG.closedDays.map(d => 'วัน' + TH_DAYS[d]).join(' ');
   $('hoursText').textContent = `เปิด ${CONFIG.openTime}–${CONFIG.closeTime} น.` + (closed ? ` · หยุดทุก${closed}` : '');
   $('footHours').textContent = `เปิด ${CONFIG.openTime}–${CONFIG.closeTime} น.` + (closed ? ` (หยุดทุก${closed})` : ' ทุกวัน');
