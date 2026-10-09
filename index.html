@@ -10,7 +10,38 @@
 <link rel="apple-touch-icon" href="favicon.png">
 <meta property="og:title" content="ห้างทองเยาวราชคลองหาด · ราคาทองคำวันนี้">
 <meta property="og:description" content="ราคาทองคำวันนี้ อัปเดตสดตามสมาคมค้าทองคำ ซื้อ ขาย แลกเปลี่ยน รับซื้อทองเก่า รับออมทอง">
-<meta property="og:image" content="promo-services.jpg">
+<meta property="og:image" content="https://sunny1000-noppa.github.io/khlonghat-gold/promo-services.jpg">
+<meta property="og:url" content="https://sunny1000-noppa.github.io/khlonghat-gold/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="th_TH">
+<link rel="canonical" href="https://sunny1000-noppa.github.io/khlonghat-gold/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "JewelryStore",
+  "name": "ห้างทองเยาวราชคลองหาด",
+  "url": "https://sunny1000-noppa.github.io/khlonghat-gold/",
+  "image": "https://sunny1000-noppa.github.io/khlonghat-gold/promo-services.jpg",
+  "logo": "https://sunny1000-noppa.github.io/khlonghat-gold/favicon.png",
+  "telephone": "+66-37-445001",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "9 หมู่ 1",
+    "addressLocality": "คลองหาด",
+    "addressRegion": "สระแก้ว",
+    "postalCode": "27260",
+    "addressCountry": "TH"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 13.4533949, "longitude": 102.2991583 },
+  "hasMap": "https://maps.app.goo.gl/8dN2U1gUfAi5zqoJ7",
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "08:00", "closes": "17:30"
+  }],
+  "sameAs": ["https://www.facebook.com/profile.php?id=100063584739837", "https://line.me/R/ti/p/@045tuugh"]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chonburi&family=Kanit:wght@400;500;600;700&family=Sarabun:wght@400;500;600&display=swap">
@@ -39,6 +70,7 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+html{scroll-behavior:smooth}
 html,body{margin:0}
 body{
   background:var(--bg);
@@ -93,8 +125,8 @@ button,input,select{font:inherit;color:inherit}
 
 /* ---------- main grid ---------- */
 .grid{display:grid;gap:18px;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);
-  grid-template-areas:"board promo" "chart calc"}
-.board{grid-area:board}.promo{grid-area:promo}.chart{grid-area:chart}.calc{grid-area:calc}
+  grid-template-areas:"board calc" "promo svc" "chart chart"}
+.board{grid-area:board}.promo{grid-area:promo}.chart{grid-area:chart}.calc{grid-area:calc}.services{grid-area:svc}
 .panel{background:linear-gradient(180deg,var(--panel-hi),var(--panel));border:1px solid var(--rule);border-radius:var(--r);min-width:0;position:relative}
 .panel-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;padding:16px 20px 0}
 .panel-h h2{margin:0;font-family:var(--f-num);font-weight:600;font-size:1.25rem;color:var(--gold-hi)}
@@ -180,7 +212,7 @@ button,input,select{font:inherit;color:inherit}
 .slides{min-height:300px}
 
 /* ---------- services + facebook ---------- */
-.lower{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);gap:18px;margin-top:18px;align-items:start}
+.lower{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);gap:18px;margin-top:18px;align-items:stretch}
 .services{padding:18px 20px 20px}
 .fb{overflow:hidden}
 .fb-open{color:var(--gold-hi);text-decoration:none;font-size:.92rem;border:1px solid var(--rule);border-radius:999px;padding:2px 12px}
@@ -234,11 +266,49 @@ button,input,select{font:inherit;color:inherit}
 footer{margin-top:22px;padding-top:16px;border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;color:var(--ink-dim);font-size:.9rem}
 footer h4{margin:0 0 4px;font-family:var(--f-num);font-weight:600;color:var(--gold);font-size:1rem}
 footer p{margin:0}
+footer .copy{grid-column:1/-1;color:var(--ink-mute);font-size:.8rem;padding-top:8px;border-top:1px solid var(--rule)}
 footer a{color:var(--gold-hi)}
+
+/* ---------- jump nav ---------- */
+.jump{position:sticky;top:env(safe-area-inset-top, 0px);z-index:20;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
+  margin:0 -16px 16px;padding:8px 16px;background:rgba(28,4,5,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-block:1px solid var(--rule)}
+.jump::-webkit-scrollbar{display:none}
+.jump a{flex:none;color:var(--ink-dim);text-decoration:none;padding:5px 14px;border-radius:999px;font-size:.92rem;font-weight:500;border:1px solid transparent;white-space:nowrap}
+.jump a:hover{color:var(--gold-hi);border-color:var(--rule)}
+.jump a.is-on{background:var(--gold);color:#3a0a0c;font-weight:600}
+main [id],.lower [id]{scroll-margin-top:calc(64px + env(safe-area-inset-top, 0px))}
+
+/* ---------- contact & map ---------- */
+.ct-panel{display:flex;flex-direction:column}
+.ct-body{padding:12px 20px 20px;display:grid;gap:14px;flex:1;grid-template-rows:auto auto 1fr}
+.ct-info{margin:0;display:grid;gap:8px}
+.ct-info div{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding-bottom:8px;border-bottom:1px dashed var(--rule)}
+.ct-info dt{color:var(--ink-mute);font-size:.9rem}
+.ct-info dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.ct-info a{color:var(--gold-hi);text-decoration:none}
+.ct-info a:hover{text-decoration:underline}
+.ct-actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 18px;border-radius:999px;border:1px solid var(--gold);color:var(--gold-hi);text-decoration:none;font-weight:600;font-family:var(--f-num)}
+.btn:hover{background:rgba(240,196,104,.12)}
+.btn-gold{background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-deep));color:#3a0a0c;border-color:transparent}
+.btn-gold:hover{filter:brightness(1.06);background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-deep))}
+.ct-map{border-radius:10px;overflow:hidden;min-height:260px;background:#e9e3d7}
+.ct-map iframe{display:block;width:100%;height:100%;min-height:260px;border:0}
+
+/* ---------- phone dock ---------- */
+.dock{display:none;position:fixed;left:0;right:0;bottom:0;z-index:30;grid-template-columns:repeat(3,1fr);
+  padding:6px max(10px, env(safe-area-inset-left, 0px)) calc(6px + env(safe-area-inset-bottom, 0px));
+  background:rgba(28,4,5,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--gold-deep)}
+.dock a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;color:var(--gold-hi);text-decoration:none;font-size:.82rem;font-weight:600;border-radius:10px}
+.dock a:active{background:rgba(240,196,104,.15)}
+.dock svg{width:22px;height:22px}
+.dock a:nth-child(2) svg{color:#06c755}
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px){
-  .grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"board" "calc" "chart" "promo"}
+  .grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"board" "calc" "promo" "svc" "chart"}
+  .dock{display:grid}
+  body{padding-bottom:calc(64px + env(safe-area-inset-bottom, 0px))}
   .brand{grid-template-columns:auto 1fr}
   .contact{grid-column:1/-1;justify-items:start;text-align:left;grid-auto-flow:column;justify-content:start;align-items:baseline;gap:4px 16px}
   footer{grid-template-columns:minmax(0,1fr)}
@@ -248,6 +318,7 @@ footer a{color:var(--gold-hi)}
 }
 @media (max-width: 520px){
   .mark{width:78px}
+  .brand .contact{display:none}
   .brand h1{font-size:1.32rem}
   .tagline{font-size:.88rem}
   .tagline::before,.tagline::after{display:none}
@@ -272,7 +343,11 @@ footer a{color:var(--gold-hi)}
   .brand h1{font-size:1.5rem}.tagline{font-size:.88rem;margin:0}
   .contact{grid-column:auto;justify-items:end;text-align:right;grid-auto-flow:row;gap:0}
   .contact .phone{font-size:1.15rem}
-  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"board board" "calc chart" "promo promo";gap:14px}
+  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"board board" "calc chart" "promo promo" "svc svc";gap:14px}
+  .dock{display:none}
+  body{padding-bottom:0}
+  .lower{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .jump{position:static}
   .board-body{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
   .board-body .kind + .kind{border-top:0;border-left:1px solid var(--rule)}
   .kind.is-bar .price{font-size:clamp(1.8rem,13cqi,3.2rem)}
@@ -310,10 +385,17 @@ footer a{color:var(--gold-hi)}
     </div>
   </header>
 
-  <main class="grid">
+  <nav class="jump" id="jump" aria-label="ไปยังส่วนต่างๆ ของหน้า">
+    <a href="#prices">ราคาทองวันนี้</a>
+    <a href="#calc">คำนวณราคา</a>
+    <a href="#services">บริการ</a>
+    <a href="#chart">กราฟราคา</a>
+    <a href="#contact">ติดต่อและแผนที่</a>
+    <a href="#facebook">ข่าวสาร</a>
+  </nav>
 
-    <!-- ===== price board ===== -->
-    <section class="panel board" aria-labelledby="boardTitle">
+  <main class="grid">
+    <section class="panel board" id="prices" aria-labelledby="boardTitle">
       <div class="board-top">
         <div>
           <h2 id="boardTitle">ราคาทองคำวันนี้</h2>
@@ -380,41 +462,7 @@ footer a{color:var(--gold-hi)}
       </div>
     </section>
 
-    <!-- ===== promo slideshow ===== -->
-    <section class="panel promo" aria-roledescription="carousel" aria-label="ข่าวสารและบริการของร้าน">
-      <div class="slides" id="slides"></div>
-      <div class="slide-nav">
-        <button type="button" id="prevSlide" aria-label="สไลด์ก่อนหน้า"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3 5 8l5 5"/></svg></button>
-        <div class="dots" id="dots" role="tablist" aria-label="เลือกสไลด์"></div>
-        <button type="button" id="pauseSlide" aria-label="หยุดเลื่อนอัตโนมัติ"><svg id="pauseIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg></button>
-        <button type="button" id="nextSlide" aria-label="สไลด์ถัดไป"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 3 5 5-5 5"/></svg></button>
-      </div>
-      <div class="progress"><i id="progressBar"></i></div>
-    </section>
-
-    <!-- ===== chart ===== -->
-    <section class="panel chart" aria-labelledby="chartTitle">
-      <div class="panel-h">
-        <h2 id="chartTitle">กราฟราคาทองคำโลก</h2>
-        <div class="seg" id="rangeSeg" role="group" aria-label="ช่วงเวลา">
-          <button type="button" data-range="1d" aria-pressed="true">24 ชม.</button>
-          <button type="button" data-range="1m" aria-pressed="false">1 เดือน</button>
-          <button type="button" data-range="6m" aria-pressed="false">6 เดือน</button>
-          <button type="button" data-range="1y" aria-pressed="false">1 ปี</button>
-          <button type="button" data-range="5y" aria-pressed="false">5 ปี</button>
-        </div>
-      </div>
-      <div class="chart-sum" id="chartSum"></div>
-      <div class="plot" id="plot">
-        <svg id="chartSvg" role="img" aria-label="กราฟราคาทองคำโลก"></svg>
-        <div class="empty" id="chartEmpty">กำลังโหลดข้อมูลกราฟ…</div>
-        <div class="tip" id="tip" hidden></div>
-      </div>
-      <div class="chart-note">หน่วย: ดอลลาร์สหรัฐ ต่อออนซ์ · ราคาทองไทยเคลื่อนไหวตามราคาทองโลกและค่าเงินบาท</div>
-    </section>
-
-    <!-- ===== calculator ===== -->
-    <section class="panel calc" aria-labelledby="calcTitle">
+    <section class="panel calc" id="calc" aria-labelledby="calcTitle">
       <div class="panel-h"><h2 id="calcTitle">คำนวณราคาตามน้ำหนัก</h2></div>
       <div class="calc-body">
         <div class="field">
@@ -463,10 +511,19 @@ footer a{color:var(--gold-hi)}
         <p class="fine">ราคาประเมินเบื้องต้นจากราคาล่าสุดบนหน้านี้ ราคาซื้อขายจริงยึดตามหน้าร้าน</p>
       </div>
     </section>
-  </main>
 
-  <div class="lower">
-  <section class="panel services" aria-labelledby="svcTitle">
+    <section class="panel promo" id="promo" aria-roledescription="carousel" aria-label="ข่าวสารและบริการของร้าน">
+      <div class="slides" id="slides"></div>
+      <div class="slide-nav">
+        <button type="button" id="prevSlide" aria-label="สไลด์ก่อนหน้า"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3 5 8l5 5"/></svg></button>
+        <div class="dots" id="dots" role="tablist" aria-label="เลือกสไลด์"></div>
+        <button type="button" id="pauseSlide" aria-label="หยุดเลื่อนอัตโนมัติ"><svg id="pauseIcon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg></button>
+        <button type="button" id="nextSlide" aria-label="สไลด์ถัดไป"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 3 5 5-5 5"/></svg></button>
+      </div>
+      <div class="progress"><i id="progressBar"></i></div>
+    </section>
+
+  <section class="panel services" id="services" aria-labelledby="svcTitle">
     <h2 id="svcTitle">บริการของร้าน</h2>
     <div class="svc">
       <div>
@@ -496,7 +553,47 @@ footer a{color:var(--gold-hi)}
     </div>
   </section>
 
-  <section class="panel fb" aria-labelledby="fbTitle">
+    <section class="panel chart" id="chart" aria-labelledby="chartTitle">
+      <div class="panel-h">
+        <h2 id="chartTitle">กราฟราคาทองคำโลก</h2>
+        <div class="seg" id="rangeSeg" role="group" aria-label="ช่วงเวลา">
+          <button type="button" data-range="1d" aria-pressed="true">24 ชม.</button>
+          <button type="button" data-range="1m" aria-pressed="false">1 เดือน</button>
+          <button type="button" data-range="6m" aria-pressed="false">6 เดือน</button>
+          <button type="button" data-range="1y" aria-pressed="false">1 ปี</button>
+          <button type="button" data-range="5y" aria-pressed="false">5 ปี</button>
+        </div>
+      </div>
+      <div class="chart-sum" id="chartSum"></div>
+      <div class="plot" id="plot">
+        <svg id="chartSvg" role="img" aria-label="กราฟราคาทองคำโลก"></svg>
+        <div class="empty" id="chartEmpty">กำลังโหลดข้อมูลกราฟ…</div>
+        <div class="tip" id="tip" hidden></div>
+      </div>
+      <div class="chart-note">หน่วย: ดอลลาร์สหรัฐ ต่อออนซ์ · ราคาทองไทยเคลื่อนไหวตามราคาทองโลกและค่าเงินบาท</div>
+    </section>
+  </main>
+
+  <div class="lower">
+  <section class="panel ct-panel" id="contact" aria-labelledby="ctTitle">
+    <div class="panel-h"><h2 id="ctTitle">ติดต่อและแผนที่ร้าน</h2></div>
+    <div class="ct-body">
+      <dl class="ct-info">
+        <div><dt>ที่อยู่</dt><dd id="ctAddress">9 หมู่ 1 ตำบลคลองหาด อำเภอคลองหาด จังหวัดสระแก้ว 27260</dd></div>
+        <div><dt>เวลาทำการ</dt><dd id="ctHours">เปิด 08:00–17:30 น. · หยุดทุกวันอาทิตย์</dd></div>
+        <div><dt>โทรศัพท์</dt><dd><a class="num" id="ctPhone" href="tel:037445001">037-445001</a></dd></div>
+        <div><dt>ไลน์</dt><dd><a id="ctLine" href="https://line.me/R/ti/p/@045tuugh" target="_blank" rel="noopener">@045tuugh</a></dd></div>
+        <div><dt>เฟซบุ๊ก</dt><dd><a id="ctFb" href="https://www.facebook.com/profile.php?id=100063584739837" target="_blank" rel="noopener">ห้างทองเยาวราชคลองหาด</a></dd></div>
+      </dl>
+      <div class="ct-actions">
+        <a class="btn btn-gold" id="ctMap" href="https://maps.app.goo.gl/8dN2U1gUfAi5zqoJ7" target="_blank" rel="noopener">นำทางไปที่ร้าน</a>
+        <a class="btn" id="ctCall" href="tel:037445001">โทรหาร้าน</a>
+      </div>
+      <div class="ct-map" id="ctMapBox"></div>
+    </div>
+  </section>
+
+  <section class="panel fb" id="facebook" aria-labelledby="fbTitle">
     <div class="panel-h">
       <h2 id="fbTitle">ข่าวสารล่าสุดจากเฟซบุ๊ก</h2>
       <a class="fb-open" id="fbOpen" href="https://www.facebook.com/profile.php?id=100063584739837" target="_blank" rel="noopener">เปิดเพจ ↗</a>
@@ -510,11 +607,7 @@ footer a{color:var(--gold-hi)}
   <footer>
     <div>
       <img class="foot-logo" src="logo-full.webp" alt="ห้างทองเยาวราชคลองหาด" width="560" height="321" loading="lazy">
-      <h4 id="footName">ติดต่อร้าน</h4>
-      <p id="footHours">เปิดทุกวัน 08:00–17:30 น. (หยุดทุกวันอาทิตย์)</p>
-      <p>โทร <span class="num" id="footPhone">037-445001</span></p>
-      <p>ไลน์ <a id="footLine" href="https://line.me/R/ti/p/@045tuugh" target="_blank" rel="noopener">@045tuugh</a></p>
-      <p>เฟซบุ๊ก <a id="footFb" href="https://www.facebook.com/profile.php?id=100063584739837" target="_blank" rel="noopener">ห้างทองเยาวราชคลองหาด</a></p>
+      <p>ทองแท้ มั่นใจ ราคายุติธรรม</p>
     </div>
     <div>
       <h4>แหล่งข้อมูลราคา</h4>
@@ -524,8 +617,15 @@ footer a{color:var(--gold-hi)}
       <h4>ข้อควรทราบ</h4>
       <p>ราคาบนเว็บไซต์ใช้เพื่อประกอบการตัดสินใจ ราคาซื้อขายจริงยึดตามหน้าร้าน ณ เวลาที่ทำรายการ</p>
     </div>
+    <p class="copy" id="copyLine">© ห้างทองเยาวราชคลองหาด</p>
   </footer>
 </div>
+
+<nav class="dock" aria-label="ติดต่อร้านด่วน">
+  <a href="tel:037445001" id="dockCall"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/></svg>โทร</a>
+  <a href="https://line.me/R/ti/p/@045tuugh" id="dockLine" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s6-3.5 8.2-6A7.5 7.5 0 0 0 22 11c0-4.4-4.5-8-10-8z" fill="currentColor"/></svg>ไลน์</a>
+  <a href="https://maps.app.goo.gl/8dN2U1gUfAi5zqoJ7" id="dockMap" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>นำทาง</a>
+</nav>
 
 <script>
 /* =====================================================================
@@ -539,11 +639,14 @@ const CONFIG = {
   closeTime: '17:30',
   closedDays: [0],              // 0 = อาทิตย์, 1 = จันทร์ … 6 = เสาร์
   shopPricesUrl: 'shop-prices.json',   // ไฟล์ราคาหน้าร้าน (ใช้แทนราคาสมาคมเมื่อเปิดใช้งาน)
-  refreshSeconds: { thai: 60, spot: 30, shop: 60, intraday: 300, history: 21600 },
+  refreshSeconds: { thai: 60, spot: 120, shop: 60, intraday: 300, history: 21600 },
   slideSeconds: 7,
   line: '@045tuugh',
   facebook: 'ห้างทองเยาวราชคลองหาด',
   facebookUrl: 'https://www.facebook.com/profile.php?id=100063584739837',
+  address: '9 หมู่ 1 ตำบลคลองหาด อำเภอคลองหาด จังหวัดสระแก้ว 27260',
+  mapUrl: 'https://maps.app.goo.gl/8dN2U1gUfAi5zqoJ7',
+  mapLat: 13.4533949, mapLng: 102.2991583,
   // สไลด์: ใส่รูป { image: 'ชื่อไฟล์', alt: 'คำอธิบาย' } หรือข้อความ { badge, title, text, tick, art }
   slides: [
     { image: 'promo-services.jpg', alt: 'ซื้อ ขาย แลกเปลี่ยน รับออมทองไม่จำกัดระยะเวลา รับฝากทองราคาดี ดอกเบี้ยถูก มีใบรับประกันทอง' },
@@ -1134,15 +1237,56 @@ function applyConfig(){
   $('tagline').textContent = CONFIG.tagline;
   $('phoneLink').textContent = 'โทร ' + CONFIG.phone;
   $('phoneLink').href = 'tel:' + CONFIG.phone.replace(/[^0-9+]/g, '');
-  $('footPhone').textContent = CONFIG.phone;
+  const tel = 'tel:' + CONFIG.phone.replace(/[^0-9+]/g, '');
+  $('ctPhone').textContent = CONFIG.phone;
+  ['ctPhone', 'ctCall', 'dockCall'].forEach(id => $(id).href = tel);
   const lineUrl = 'https://line.me/R/ti/p/' + encodeURIComponent(CONFIG.line);
-  $('lineText').textContent = CONFIG.line; $('lineLink').href = lineUrl;
-  $('footLine').textContent = CONFIG.line; $('footLine').href = lineUrl;
-  $('footFb').textContent = CONFIG.facebook;
-  ['footFb', 'fbOpen', 'fbFallback'].forEach(id => $(id).href = CONFIG.facebookUrl);
+  $('lineText').textContent = CONFIG.line;
+  $('ctLine').textContent = CONFIG.line;
+  ['lineLink', 'ctLine', 'dockLine'].forEach(id => $(id).href = lineUrl);
+  $('ctFb').textContent = CONFIG.facebook;
+  ['ctFb', 'fbOpen', 'fbFallback'].forEach(id => $(id).href = CONFIG.facebookUrl);
+  $('ctAddress').textContent = CONFIG.address;
+  ['ctMap', 'dockMap'].forEach(id => $(id).href = CONFIG.mapUrl);
   const closed = CONFIG.closedDays.map(d => 'วัน' + TH_DAYS[d]).join(' ');
   $('hoursText').textContent = `เปิด ${CONFIG.openTime}–${CONFIG.closeTime} น.` + (closed ? ` · หยุดทุก${closed}` : '');
-  $('footHours').textContent = `เปิด ${CONFIG.openTime}–${CONFIG.closeTime} น.` + (closed ? ` (หยุดทุก${closed})` : ' ทุกวัน');
+  $('ctHours').textContent = `เปิด ${CONFIG.openTime}–${CONFIG.closeTime} น.` + (closed ? ` (หยุดทุก${closed})` : ' ทุกวัน');
+  $('copyLine').textContent = `© ${bkkParts().y + 543} ${CONFIG.shopName}`;
+}
+
+/* ---------- map (loads when scrolled near) ---------- */
+function initMap(){
+  const box = $('ctMapBox');
+  const load = () => {
+    if (box.querySelector('iframe')) return;
+    const f = document.createElement('iframe');
+    f.title = 'แผนที่ร้าน ' + CONFIG.shopName;
+    f.loading = 'lazy';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    f.src = `https://maps.google.com/maps?q=${CONFIG.mapLat},${CONFIG.mapLng}&z=16&hl=th&output=embed`;
+    box.append(f);
+  };
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)){ load(); io.disconnect(); } }, { rootMargin: '400px' });
+    io.observe(box);
+  } else load();
+}
+
+/* ---------- jump nav highlight ---------- */
+function initJump(){
+  const links = [...document.querySelectorAll('#jump a')];
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  if (!('IntersectionObserver' in window)) return;
+  const seen = new Map();
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => seen.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0));
+    let best = null;
+    for (const id of map.keys()) if ((seen.get(id) || 0) > 0){ best = id; break; }
+    links.forEach(a => a.classList.toggle('is-on', a === map.get(best)));
+    const on = map.get(best);
+    if (on){ const nav = $('jump'); const l = on.offsetLeft - 16; if (l < nav.scrollLeft || on.offsetLeft + on.offsetWidth > nav.scrollLeft + nav.clientWidth) nav.scrollTo({ left: l, behavior: 'smooth' }); }
+  }, { rootMargin: '-80px 0px -45% 0px', threshold: [0, .1, .3, .6] });
+  map.forEach((a, id) => { const el = $(id); if (el) io.observe(el); });
 }
 
 function start(){
@@ -1161,7 +1305,7 @@ function start(){
   every(loadIntraday, CONFIG.refreshSeconds.intraday);
   every(loadHistory, CONFIG.refreshSeconds.history);
 
-  buildFb();
+  buildFb(); initMap(); initJump();
   let fbT; window.addEventListener('resize', () => { clearTimeout(fbT); fbT = setTimeout(buildFb, 500); });
   $('refreshBtn').addEventListener('click', () => { loadShop(); loadThai(); loadSpot(); });
   document.addEventListener('visibilitychange', () => { if (!document.hidden){ loadShop(); loadThai(); loadSpot(); } });
