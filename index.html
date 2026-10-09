@@ -611,7 +611,7 @@ main [id],.lower [id]{scroll-margin-top:calc(64px + env(safe-area-inset-top, 0px
     </div>
     <div>
       <h4>แหล่งข้อมูลราคา</h4>
-      <p>ราคาทองไทยอ้างอิงสมาคมค้าทองคำ (ผ่านบริการ Thai Gold API) · ราคาทองคำโลก กราฟ และค่าเงินบาทจาก XAUS</p>
+      <p>ราคาทองไทยจากเว็บไซต์สมาคมค้าทองคำ อัปเดตอัตโนมัติทุกประมาณ 5 นาที (สำรองด้วย Thai Gold API) · ราคาทองคำโลก กราฟ และค่าเงินบาทจาก XAUS</p>
     </div>
     <div>
       <h4>ข้อควรทราบ</h4>
@@ -657,7 +657,8 @@ const CONFIG = {
 };
 
 const API = {
-  thai: 'https://api.chnwt.dev/thai-gold-api/latest',
+  own: 'prices.json',   // ราคาที่ระบบอัตโนมัติบน GitHub อ่านจากเว็บไซต์สมาคมค้าทองคำ
+  thai: 'https://api.chnwt.dev/thai-gold-api/latest',   // แหล่งสำรอง
   spot: 'https://xaus.com/api/v1/spot?currency=THB&compact=1',
   intraday: 'https://xaus.com/api/v1/intraday?symbol=xau&hours=24',
   history: 'https://xaus.com/api/v1/history',
@@ -665,7 +666,7 @@ const API = {
 
 /* ราคาล่าสุดที่บันทึกไว้ ใช้เฉพาะตอนที่ยังดึงราคาสดไม่ได้เลย */
 const SEED = {
-  thai: { barBuy: 65550, barSell: 65750, jewBuy: 64232.92, jewSell: 66550, date: '08/10/2569', time: '16:18', round: 16 },
+  thai: { barBuy: 66150, barSell: 66350, jewBuy: 64824.16, jewSell: 67150, date: '09/10/2569', time: '09:39', round: 2 },
   spot: { usd: 4117, fx: 33.66 },
 };
 
@@ -743,16 +744,36 @@ function parseThai(j){
   };
 }
 
+const roundKey = d => { const m = String(d && d.date || '').match(/(\d{2})\/(\d{2})\/(\d{4})/); return m ? Number(m[3] + m[2] + m[1]) * 1000 + (d.round || 0) : 0; };
+
+async function loadOwn(){
+  const j = await getJSON(API.own + '?t=' + Date.now());
+  const l = j && j.latest;
+  if (!l || !isFinite(l.barSell)) throw new Error('bad data');
+  return { barBuy: l.barBuy, barSell: l.barSell, jewBuy: l.jewBuy, jewSell: l.jewSell, date: l.date, time: l.time, round: l.round,
+           today: Array.isArray(j.today) ? j.today : [], src: 'own' };
+}
+async function loadBackup(){
+  const d = parseThai(await getJSON(API.thai));
+  if (!isFinite(d.barSell)) throw new Error('bad number');
+  d.src = 'backup';
+  return d;
+}
+
 async function loadThai(){
-  try {
-    const d = parseThai(await getJSON(API.thai));
-    if (!isFinite(d.barSell)) throw new Error('bad number');
+  const [own, backup] = await Promise.allSettled([loadOwn(), loadBackup()]);
+  const picks = [own, backup].filter(r => r.status === 'fulfilled').map(r => r.value);
+  if (picks.length){
+    // ใช้ประกาศที่ใหม่ที่สุด (วันที่และครั้งที่) ถ้าเท่ากันใช้ข้อมูลของระบบเราเอง
+    picks.sort((a, b) => roundKey(b) - roundKey(a) || (a.src === 'own' ? -1 : 1));
+    const d = picks[0];
+    if (d.src !== 'own' && own.status === 'fulfilled' && own.value.date === d.date) d.today = own.value.today;
     const before = state.thai;
     state.thai = d; state.thaiSource = 'live'; state.thaiOk = true;
     store.set('thai', d);
     recordRound(d);
     renderPrices(before);
-  } catch(e){
+  } else {
     state.thaiOk = false;
     renderPrices(state.thai);
   }
@@ -830,6 +851,15 @@ function recordRound(d){
   }
 }
 function barChange(d){
+  if (d && Array.isArray(d.today) && d.today.length){
+    const t = d.today.slice().sort((a, b) => a.round - b.round);
+    const idx = t.findIndex(r => r.round === d.round);
+    if (idx > 0){
+      const prev = t[idx - 1], first = t[0];
+      return { vsPrev: d.barSell - prev.barSell, prevRound: prev.round, vsFirst: first.round === 1 && idx > 1 ? d.barSell - first.barSell : null };
+    }
+    if (idx === 0 && d.round === 1) return null;
+  }
   const log = store.get('rounds');
   if (!log || !d || log.date !== d.date) return null;
   const idx = log.rounds.findIndex(r => (d.round != null ? r.round === d.round : r.time === d.time));
@@ -861,6 +891,18 @@ function setPrice(id, val, oldVal){
   }
 }
 
+function todayDMY(){ const b = bkkParts(); return `${pad(b.d)}/${pad(b.m)}/${b.y + 543}`; }
+function normDMY(dmy){ const m = String(dmy || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); return m ? `${pad(m[1])}/${pad(m[2])}/${m[3]}` : ''; }
+function isToday(dmy){ return normDMY(dmy) === todayDMY(); }
+function agoText(e){
+  if (!isToday(e.date) || !e.time) return '';
+  const b = bkkParts(), [h, m] = e.time.split(':').map(Number);
+  const mins = (b.h * 60 + b.mi) - (h * 60 + m);
+  if (mins < 0) return '';
+  if (mins < 1) return ' (เมื่อสักครู่)';
+  if (mins < 60) return ` (${mins} นาทีที่แล้ว)`;
+  return ` (${Math.floor(mins / 60)} ชม. ${mins % 60} นาทีที่แล้ว)`;
+}
 function thaiDateText(dmy){
   const m = String(dmy).match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if (!m) return dmy || '';
@@ -878,12 +920,13 @@ function renderPrices(prev){
   const parts = [thaiDateText(e.date)];
   if (e.time) parts.push(`เวลา ${e.time} น.`);
   if (e.round) parts.push(`ครั้งที่ ${e.round}`);
-  $('boardMeta').textContent = e.date ? 'ประกาศ ' + parts.join(' · ') : 'กำลังโหลดราคา…';
+  $('boardMeta').textContent = e.date ? 'ประกาศ ' + parts.join(' · ') + agoText(e) : 'กำลังโหลดราคา…';
 
   const badge = $('liveBadge'), lt = $('liveText');
   badge.classList.remove('is-shop', 'is-stale');
   if (e.shop){ badge.classList.add('is-shop'); lt.textContent = 'ราคาหน้าร้าน'; }
-  else if (state.thaiSource === 'live' && state.thaiOk !== false){ lt.textContent = 'อัปเดตสด'; }
+  else if (state.thaiSource === 'live' && state.thaiOk !== false && isToday(e.date)){ lt.textContent = 'อัปเดตสด'; }
+  else if (state.thaiSource === 'live' && state.thaiOk !== false){ badge.classList.add('is-stale'); lt.textContent = 'รอประกาศราคาวันนี้'; }
   else { badge.classList.add('is-stale'); lt.textContent = state.thaiOk === null ? 'กำลังเชื่อมต่อ' : 'ออฟไลน์'; }
 
   $('sourceLine').textContent = e.shop
@@ -897,6 +940,9 @@ function renderPrices(prev){
     n.textContent = state.thaiSource === 'seed'
       ? 'ยังเชื่อมต่อแหล่งราคาไม่ได้ ราคาที่แสดงเป็นราคาที่บันทึกไว้ล่าสุด กรุณาโทรสอบถามราคาปัจจุบันที่ร้าน'
       : 'การเชื่อมต่อขัดข้องชั่วคราว ราคาที่แสดงเป็นราคาล่าสุดที่ได้รับ ระบบจะลองใหม่อัตโนมัติ';
+  } else if (!e.shop && state.thaiSource === 'live' && e.date && !isToday(e.date)){
+    n.hidden = false;
+    n.textContent = `ยังไม่มีราคาประกาศของวันนี้ ราคาที่แสดงเป็นราคาล่าสุดเมื่อ ${thaiDateText(e.date)}${e.time ? ' เวลา ' + e.time + ' น.' : ''} หน้านี้จะเปลี่ยนเป็นราคาใหม่ทันทีที่มีประกาศ`;
   } else n.hidden = true;
 
   const c = e.shop ? null : barChange(state.thai);
@@ -929,7 +975,7 @@ function stampCheck(){
   state.lastCheck = new Date();
   const b = bkkParts(state.lastCheck);
   const ok = state.thaiOk !== false;
-  $('checkedText').textContent = `ตรวจสอบราคาล่าสุด ${pad(b.h)}:${pad(b.mi)}:${pad(b.s)} น. · รีเฟรชอัตโนมัติทุก ${CONFIG.refreshSeconds.thai} วินาที` + (ok ? '' : ' (กำลังลองเชื่อมต่อใหม่)');
+  $('checkedText').textContent = `ตรวจราคาล่าสุด ${pad(b.h)}:${pad(b.mi)}:${pad(b.s)} น. · ตรวจใหม่ทุก ${CONFIG.refreshSeconds.thai} วินาที · ราคาทองไทยเปลี่ยนเมื่อสมาคมประกาศราคาใหม่` + (ok ? '' : ' (กำลังลองเชื่อมต่อใหม่)');
 }
 
 /* ---------- calculator ---------- */

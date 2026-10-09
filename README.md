@@ -8,6 +8,8 @@ A single-page Thai website that shows live gold prices for the shop. It works on
 |---|---|
 | `index.html` | The whole website (design, prices, chart, calculator, slideshow) |
 | `shop-prices.json` | The shop's own prices, used only when you switch them on |
+| `prices.json` | Latest association prices, written automatically — don't edit by hand |
+| `.github/workflows/update-prices.yml` | The automatic job that keeps `prices.json` up to date |
 | `logo-lions.webp`, `logo-full.webp`, `favicon.png` | Shop logo for the header, footer and browser tab icon |
 | `promo-services.jpg`, `promo-buy-old-gold.jpg` | Slideshow pictures. To add or swap one, upload the image and list its file name in `slides` inside `CONFIG` |
 | `README.md` | This guide |
@@ -16,11 +18,12 @@ A single-page Thai website that shows live gold prices for the shop. It works on
 
 | What | Source | Refresh |
 |---|---|---|
-| Gold bar and jewelry buy/sell (สมาคมค้าทองคำ) | Thai Gold API, `api.chnwt.dev` — free, no key, community-run, reads goldtraders.or.th | every 60 s |
-| World gold price (spot) and USD/THB | XAUS, `xaus.com` — free, no key | every 30 s |
+| Gold bar and jewelry buy/sell | The association's own website (classic.goldtraders.or.th), read by an automatic job on GitHub and saved to `prices.json` | about every 5 minutes, 08:00–18:59 Thai time |
+| Backup for the Thai price | Thai Gold API, `api.chnwt.dev` (community-run copy) | page uses whichever announcement is newer |
+| World gold price (spot) and USD/THB | XAUS, `xaus.com` | every 2 min |
 | Chart (24 hours to 5 years) | XAUS intraday and daily history | every 5 min / 6 h |
 
-Both sources are free and need no account. Neither is official, so they can occasionally lag or go down. When that happens the page keeps showing the last prices it received, marks them as offline, and retries on its own.
+The automatic job lives in `.github/workflows/update-prices.yml`. It runs on GitHub's servers for free and only saves a new `prices.json` when the association announces a new round. To run it straight away: repository → **Actions** → **อัปเดตราคาทอง** → **Run workflow**. GitHub can start scheduled jobs a few minutes late when it is busy.
 
 ## Put it online (free)
 

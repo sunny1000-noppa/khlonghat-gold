@@ -1,0 +1,130 @@
+name: อัปเดตราคาทอง
+
+# อ่านราคาจากเว็บไซต์สมาคมค้าทองคำทุก 5 นาที ช่วง 08:00–18:59 น. (เวลาไทย)
+# GitHub อาจเริ่มงานช้ากว่ากำหนดได้บ้างในช่วงที่มีผู้ใช้มาก
+on:
+  schedule:
+    - cron: '*/5 1-11 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: update-prices
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: อ่านราคาล่าสุด
+        run: |
+          cat > /tmp/update-prices.mjs <<'SCRIPT'
+          // อ่านราคาทองล่าสุดจากเว็บไซต์สมาคมค้าทองคำ แล้วบันทึกลง prices.json
+          // ทำงานบน GitHub Actions ทุก 5 นาที (ดู .github/workflows/update-prices.yml)
+          import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+
+          const SOURCE = 'https://classic.goldtraders.or.th/default.aspx';
+          const OUT = process.argv[2] || 'prices.json';
+
+          const num = s => {
+            const n = Number(String(s || '').replace(/[^\d.]/g, ''));
+            return Number.isFinite(n) && n > 0 ? n : null;
+          };
+          const pad = n => String(n).padStart(2, '0');
+
+          function decode(buf, contentType) {
+            const head = buf.subarray(0, 4096).toString('latin1');
+            const cs = (/charset=([\w-]+)/i.exec(contentType || '') || /charset=["']?([\w-]+)/i.exec(head) || [])[1] || 'utf-8';
+            const label = /tis-?620|windows-874|x-windows-874/i.test(cs) ? 'windows-874' : cs;
+            try { return new TextDecoder(label).decode(buf); } catch { return new TextDecoder('utf-8').decode(buf); }
+          }
+
+          function parse(html) {
+            const byId = id => {
+              const m = new RegExp(`id="[^"]*${id}"[^>]*>([^<]*)<`, 'i').exec(html);
+              return m ? m[1].trim() : null;
+            };
+            const text = html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ')
+              .replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&#160;/g, ' ').replace(/\s+/g, ' ');
+
+            const AMT = '([\\d,]+\\.\\d{2})';
+            const head = new RegExp(`(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})\\s*เวลา\\s*(\\d{1,2})[:.](\\d{2})\\s*น\\.?\\s*\\(?\\s*ครั้งที่\\s*(\\d+)`).exec(byId('lblAsTime') || '') ||
+                         new RegExp(`ประจำวันที่\\s*(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})\\s*เวลา\\s*(\\d{1,2})[:.](\\d{2})\\s*น\\.?\\s*\\(?\\s*ครั้งที่\\s*(\\d+)`).exec(text);
+            const bar = new RegExp(`ทองคำแท่ง\\s*96\\.5\\s*%\\s*ขายออก\\s*${AMT}\\s*รับซื้อ\\s*${AMT}`).exec(text);
+            const jew = new RegExp(`ทองรูปพรรณ\\s*96\\.5\\s*%\\s*ขายออก\\s*${AMT}\\s*(?:ฐานภาษี|รับซื้อ)\\s*${AMT}`).exec(text);
+
+            const out = {
+              date: head ? `${pad(head[1])}/${pad(head[2])}/${head[3]}` : null,
+              time: head ? `${pad(head[4])}:${head[5]}` : null,
+              round: head ? Number(head[6]) : null,
+              barSell: num(byId('lblBLSell')) ?? (bar && num(bar[1])),
+              barBuy: num(byId('lblBLBuy')) ?? (bar && num(bar[2])),
+              jewSell: num(byId('lblOMSell')) ?? (jew && num(jew[1])),
+              jewBuy: num(byId('lblOMBuy')) ?? (jew && num(jew[2])),
+            };
+            return out;
+          }
+
+          const sameRound = (a, b) => a && b && a.date === b.date && a.round === b.round && a.time === b.time &&
+            a.barBuy === b.barBuy && a.barSell === b.barSell && a.jewBuy === b.jewBuy && a.jewSell === b.jewSell;
+
+          async function main() {
+            const res = await fetch(SOURCE + '?t=' + Date.now(), {
+              headers: { 'User-Agent': 'Mozilla/5.0 (khlonghat-gold price board)', 'Cache-Control': 'no-cache' },
+              signal: AbortSignal.timeout(30000),
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const html = decode(Buffer.from(await res.arrayBuffer()), res.headers.get('content-type'));
+            const p = parse(html);
+            console.log('parsed', JSON.stringify(p));
+            if (!p.date || !p.round || !p.barSell || !p.barBuy || !p.jewSell) throw new Error('could not read prices from page');
+            if (p.barSell < 10000 || p.barSell > 1000000 || p.barBuy > p.barSell) throw new Error('prices look wrong');
+
+            const prev = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
+            if (sameRound(prev.latest, p)) { console.log('no change'); return; }
+
+            let today = Array.isArray(prev.today) && prev.latest && prev.latest.date === p.date ? prev.today : [];
+            today = today.filter(r => r.round !== p.round);
+            today.push({ round: p.round, time: p.time, barBuy: p.barBuy, barSell: p.barSell, jewBuy: p.jewBuy, jewSell: p.jewSell });
+            today.sort((a, b) => a.round - b.round);
+
+            let days = Array.isArray(prev.days) ? prev.days.filter(d => d.date !== p.date) : [];
+            days.push({ date: p.date, barBuy: p.barBuy, barSell: p.barSell, jewSell: p.jewSell });
+            const key = d => d.date.split('/').reverse().join('');
+            days.sort((a, b) => key(a) < key(b) ? -1 : 1);
+            days = days.slice(-400);
+
+            const out = {
+              source: 'สมาคมค้าทองคำ (goldtraders.or.th)',
+              updatedAt: new Date().toISOString(),
+              latest: p,
+              today,
+              days,
+            };
+            writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
+            console.log('saved round', p.round, p.time);
+          }
+
+          main().catch(e => { console.error('ERROR:', e.message); process.exit(1); });
+          SCRIPT
+          node /tmp/update-prices.mjs prices.json
+      - name: บันทึกเมื่อราคาเปลี่ยน
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- prices.json; then echo "ราคาไม่เปลี่ยน"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add prices.json
+          git commit -m "ราคาทอง ครั้งที่ $(node -p "require('./prices.json').latest.round") เวลา $(node -p "require('./prices.json').latest.time")"
+          git pull --rebase --quiet || true
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" >/dev/null 2>&1 || true

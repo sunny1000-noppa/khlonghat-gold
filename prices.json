@@ -1,0 +1,45 @@
+{
+ "source": "สมาคมค้าทองคำ (goldtraders.or.th)",
+ "updatedAt": "2026-10-09T02:47:41.300Z",
+ "latest": {
+  "date": "09/10/2569",
+  "time": "09:39",
+  "round": 2,
+  "barSell": 66350,
+  "barBuy": 66150,
+  "jewSell": 67150,
+  "jewBuy": 64824.16
+ },
+ "today": [
+  {
+   "round": 1,
+   "time": "09:03",
+   "barBuy": 66100,
+   "barSell": 66300,
+   "jewBuy": 64778.68,
+   "jewSell": 67100
+  },
+  {
+   "round": 2,
+   "time": "09:39",
+   "barBuy": 66150,
+   "barSell": 66350,
+   "jewBuy": 64824.16,
+   "jewSell": 67150
+  }
+ ],
+ "days": [
+  {
+   "date": "08/10/2569",
+   "barBuy": 65550,
+   "barSell": 65750,
+   "jewSell": 66550
+  },
+  {
+   "date": "09/10/2569",
+   "barBuy": 66150,
+   "barSell": 66350,
+   "jewSell": 67150
+  }
+ ]
+}
